@@ -11,7 +11,7 @@ public class EmotionSystem : MonoBehaviour
     //シングルトン
 
     #region Singleton
-    private static EmotionSystem current;
+    public static EmotionSystem current;
     private void Awake()
     {
         if (current != null && current != this)
@@ -29,13 +29,13 @@ public class EmotionSystem : MonoBehaviour
 
     [Header("Emotions starting values")]
     [Range(0,100)]  //喜び
-    public int emotionHappiness;
+    [SerializeField] int emotionHappiness;
     [Range(0,100)]  //悲しみ
-    public int emotionSadness;
+    [SerializeField] int emotionSadness;
     [Range(0,100)]  //怒り
-    public int emotionAnger;
+    [SerializeField] int emotionAnger;
     [Range(0,100)]　//恐がり
-    public int emotionFear;
+    [SerializeField] int emotionFear;
 
     /// //////////
     /// //////////
@@ -49,16 +49,9 @@ public class EmotionSystem : MonoBehaviour
         
     }
 
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-            EmotionEventHandler.eventHandler += EmotionSystem.EventEmotionChange;
-        else
-            EmotionEventHandler.eventHandler -= EmotionSystem.EventEmotionChange;
-    }
 
     //感情の値を変える関数
-    public static void EventEmotionChange(int eHap, int eSad, int eAng, int eFea, Action resultAction = null)
+    public void EventEmotionChange(int eHap, int eSad, int eAng, int eFea, Action resultAction = null)
     {
         //このシステムにある値を変えます
         current.emotionHappiness    -= eHap;
