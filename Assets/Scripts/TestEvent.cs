@@ -32,26 +32,4 @@ public class TestEvent : EventParentClass
         Debug.Log("3");
     }
     /// /// /// /// /// /// /// 
-
-    protected override void ResultA()
-    {
-        Debug.Log("1, 2");
-    }
-
-    protected override void ResultB()
-    {
-        Debug.Log("2, 3");
-    }
-
-    protected override void ResultC()
-    {
-
-    }
-
-    protected override void ResultD()
-    {
-
-    }
-    /// /// /// /// /// /// /// 
-
 }

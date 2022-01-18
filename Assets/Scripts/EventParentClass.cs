@@ -87,7 +87,7 @@ public class EventParentClass : MonoBehaviour
     /// /// /// /// /// /// /// 
     protected void EventStart(int id, int input)
     {
-        if (id == this.id)
+        if (id == this.id && EmotionEventHandler.eventIsOn[id])
         {
             switch (input)
             {
@@ -122,16 +122,16 @@ public class EventParentClass : MonoBehaviour
             switch (input)
             {
                 case 0:
-                    ResultA();
+                    EmotionEventHandler.eventListManager[id][0] = true;
                     break;
                 case 1:
-                    ResultB();
+                    EmotionEventHandler.eventListManager[id][1] = true;
                     break;
                 case 2:
-                    ResultC();
+                    EmotionEventHandler.eventListManager[id][2] = true;
                     break;
                 case 3:
-                    ResultD();
+                    EmotionEventHandler.eventListManager[id][3] = true;
                     break;
             }
         }
@@ -149,13 +149,5 @@ public class EventParentClass : MonoBehaviour
     virtual protected void EventB() { }
     virtual protected void EventC() { }
     virtual protected void EventD() { }
-    /// /// /// /// /// /// /// /// /// 
-
-    //  ‘I‘ð‚É‚æ‚Á‚Ä‚ÌŒ‹‰Ê
-    /// /// /// /// /// /// /// /// /// 
-    virtual protected void ResultA() { }
-    virtual protected void ResultB() { }
-    virtual protected void ResultC() { }
-    virtual protected void ResultD() { }
     /// /// /// /// /// /// /// /// /// 
 }

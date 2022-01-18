@@ -20,7 +20,7 @@ public class EmotionEventHandler : MonoBehaviour
 
     /// //////////
     /// //////////
-
+    
     /// //////////
     //エベントシステムを作ります
     /// //////////
@@ -49,4 +49,28 @@ public class EmotionEventHandler : MonoBehaviour
         if (onEventUnlock != null)
             onEventUnlock(id, input);
     }
+
+    //イベントの　id と　結果
+    public static bool[][] eventListManager;
+    public static bool[] eventIsOn;
+    [SerializeField] int eventAmount = 10;
+
+    private void Start()
+    {
+        EventListInitialize();
+    }
+
+    void EventListInitialize()
+    {
+        eventIsOn = new bool[eventAmount];
+        eventListManager = new bool[eventAmount][];
+        for (int i = 0; i < eventAmount; i++)
+        {
+            eventListManager[i] = new bool[4] { false, false, false, false };
+            eventIsOn[i] = false;
+        }
+    }
+
+
+
 }
