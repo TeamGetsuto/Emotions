@@ -7,18 +7,24 @@ public class EventParentClass : MonoBehaviour
     //イベントプロパティ
     /// /// /// /// /// /// /// 
     [Header("Event placement")]
-    public float eventRadius;
-    public Vector3 eventOffset;
+    [SerializeField] float eventRadius;
+    [SerializeField] Vector3 eventOffset;
     /// /// /// /// /// /// /// 
 
     //イベント管理情報
     /// /// /// /// /// /// /// 
     [Header("Event ID")]
-    public int id;
+    [SerializeField] int id;
     protected int input = -1;
     protected bool eventEnded = false;
     private bool isInside = false;
     /// /// /// /// /// /// /// 
+    //伝えられる感情
+    [Header("Usable Emotions")]
+    [SerializeField] bool canUseHappiness   = false;
+    [SerializeField] bool canUseSadness     = false;
+    [SerializeField] bool canUseAnger       = false;
+    
 
     //イベント初期化
     /// /// /// /// /// /// /// 
@@ -44,13 +50,13 @@ public class EventParentClass : MonoBehaviour
             Debug.Log("Inside");
             //仮
             /// //////////
-            if (Input.GetKey(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Q))
                 input = 0;
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W))
                 input = 1;
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
                 input = 2;
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.D))
                 input = 3;
             /// //////////
             
@@ -87,28 +93,37 @@ public class EventParentClass : MonoBehaviour
     /// /// /// /// /// /// /// 
     protected void EventStart(int id, int input)
     {
-        if (id == this.id && EmotionEventHandler.eventIsOn[id])
+        if (id == this.id)
         {
             switch (input)
             {
                 case 0:
-                    EventA();
-                    eventEnded = true;
-                    
+                    //削除するかどうか後で決める
+                    ///
+                    if (canUseHappiness)
+                    {
+                    ///
+                        EventHappiness();
+                        eventEnded = true;
+                    }
                     break;
                 case 1:
-                    EventB();
-                    eventEnded = true;
+                    if (canUseSadness)
+                    {
+                        EventSadness();
+                        eventEnded = true;
+                    }
                     break;
                 case 2:
-                    EventC();
-                    eventEnded = true;
+                    if (canUseAnger)
+                    {
+                        EventAnger();
+                        eventEnded = true;
+                    }
                     break;
-                case 3:
-                    EventD();
-                    eventEnded = true;
-                    break;
+                    
             }
+            //イベントの結果
             EmotionEventHandler.current.EventUnlockTrigger(id, input);
         }
     }
@@ -122,16 +137,25 @@ public class EventParentClass : MonoBehaviour
             switch (input)
             {
                 case 0:
-                    EmotionEventHandler.eventListManager[id][0] = true;
+                    //削除するかどうか後で決める
+                    ///
+                    if (canUseHappiness)
+                    {
+                    ///
+                        EmotionEventHandler.eventListManager[id][0] = true;
+                    }
                     break;
                 case 1:
-                    EmotionEventHandler.eventListManager[id][1] = true;
+                    if (canUseSadness)
+                    {
+                        EmotionEventHandler.eventListManager[id][1] = true;
+                    }
                     break;
                 case 2:
-                    EmotionEventHandler.eventListManager[id][2] = true;
-                    break;
-                case 3:
-                    EmotionEventHandler.eventListManager[id][3] = true;
+                    if (canUseAnger)
+                    {
+                        EmotionEventHandler.eventListManager[id][2] = true;
+                    }
                     break;
             }
         }
@@ -145,9 +169,8 @@ public class EventParentClass : MonoBehaviour
 
     //  選択によっての処理
     /// /// /// /// /// /// /// /// /// 
-    virtual protected void EventA() { }
-    virtual protected void EventB() { }
-    virtual protected void EventC() { }
-    virtual protected void EventD() { }
+    virtual protected void EventHappiness() { }
+    virtual protected void EventSadness() { }
+    virtual protected void EventAnger() { }
     /// /// /// /// /// /// /// /// /// 
 }
