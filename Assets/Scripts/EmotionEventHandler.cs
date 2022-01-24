@@ -66,7 +66,7 @@ public class EmotionEventHandler : MonoBehaviour
         eventListManager = new bool[eventAmount][];
         for (int i = 0; i < eventAmount; i++)
         {
-            eventListManager[i] = new bool[4] { false, false, false, false };
+            eventListManager[i] = new bool[3] { false, false, false };
             eventIsOn[i] = false;
         }
     }

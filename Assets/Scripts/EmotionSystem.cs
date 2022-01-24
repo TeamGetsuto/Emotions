@@ -29,13 +29,11 @@ public class EmotionSystem : MonoBehaviour
 
     [Header("Emotions starting values")]
     [Range(0,100)]  //喜び
-    [SerializeField] int emotionHappiness;
+    [SerializeField] int playerEmotionHappiness;
     [Range(0,100)]  //悲しみ
-    [SerializeField] int emotionSadness;
+    [SerializeField] int playerEmotionSadness;
     [Range(0,100)]  //怒り
-    [SerializeField] int emotionAnger;
-    [Range(0,100)]　//恐がり
-    [SerializeField] int emotionFear;
+    [SerializeField] int playerEmotionAnger;
 
     /// //////////
     /// //////////
@@ -51,13 +49,12 @@ public class EmotionSystem : MonoBehaviour
 
 
     //感情の値を変える関数
-    public void EventEmotionChange(int eHap, int eSad, int eAng, int eFea, Action resultAction = null)
+    public void PlayerEventEmotionChange(int eHap, int eSad, int eAng, Action resultAction = null)
     {
         //このシステムにある値を変えます
-        current.emotionHappiness    -= eHap;
-        current.emotionSadness      -= eSad;
-        current.emotionAnger        -= eAng;
-        current.emotionFear         -= eFea;
+        current.playerEmotionHappiness -= eHap;
+        current.playerEmotionSadness -= eSad;
+        current.playerEmotionAnger -= eAng;
         resultAction();
     }
 
