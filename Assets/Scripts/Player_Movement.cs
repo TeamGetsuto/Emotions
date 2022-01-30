@@ -6,7 +6,7 @@ public class Player_Movement : MonoBehaviour
 {
     Rigidbody playerRigid;
     Vector3 direction;
-    [SerializeField] float speed = 5.0f;
+    [SerializeField] float speed = 3.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,8 +15,9 @@ public class Player_Movement : MonoBehaviour
 
     void FixedUpdate()
     {
-        float movement = Input.GetAxis("Horizontal");
-        direction = new Vector3(movement * speed, 0, 0);
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+        direction = new Vector3(x * speed, 0, z * speed);
         playerRigid.MovePosition(transform.position + direction * Time.deltaTime);
     }
     // Update is called once per frame
