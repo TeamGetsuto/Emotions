@@ -40,9 +40,10 @@ public class Player_Movement : MonoBehaviour
             Debug.Log(isRun + ", " +"í‚é~");
         }
     }
-    void UdDate()
+
+    void Update()
     {
-        if(isRun)
+        if (isRun)
         {
             Footsteps_SE();
         }
