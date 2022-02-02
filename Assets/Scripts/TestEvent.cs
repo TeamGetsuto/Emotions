@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TestEvent : EventParentClass
 {
+    //eventHasEnded をtrue に設定する
+    
     //プレイヤーが近いかどうか確認
     void Update()
     {
@@ -16,16 +18,19 @@ public class TestEvent : EventParentClass
     protected override void EventHappiness()
     {
         Debug.Log("1");
+        animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
         Debug.Log("2");
+        animatiionEnded = true;
     }
 
     protected override void EventAnger()
     {
-
+        Debug.Log("3");
+        animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 
 }
