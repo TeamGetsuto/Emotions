@@ -10,6 +10,7 @@ public class Camera_Move : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.Find("Player");
 
         // MainCamera(©•ª©g)‚Æplayer‚Æ‚Ì‘Š‘Î‹——£‚ğ‹‚ß‚é
         offset = transform.position - player.transform.position;

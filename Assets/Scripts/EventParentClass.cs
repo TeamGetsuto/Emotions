@@ -19,6 +19,7 @@ public class EventParentClass : MonoBehaviour
     protected bool eventEnded = false;
     private bool isInside = false;
     /// /// /// /// /// /// /// 
+    protected bool animatiionEnded = false;
     //“`‚¦‚ç‚ê‚éŠ´î
     [Header("Usable Emotions")]
     [SerializeField] bool canUseHappiness   = false;
@@ -124,7 +125,8 @@ public class EventParentClass : MonoBehaviour
                     
             }
             //ƒCƒxƒ“ƒg‚ÌŒ‹‰Ê
-            EmotionEventHandler.current.EventUnlockTrigger(id, input);
+            if(animatiionEnded)
+                EmotionEventHandler.current.EventUnlockTrigger(id, input);
         }
     }
     /// /// /// /// /// /// /// 
