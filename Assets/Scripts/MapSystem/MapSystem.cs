@@ -7,10 +7,8 @@ public class MapSystem : MonoBehaviour
     //イベント発生位置
     [SerializeField] GameObject[] eventOccurrence;
 
-    public int id = 1;
-
     //場所ごとに発生できるイベント
-    int[][] eventNum;
+    string[][] eventPlaceNum;
 
     int count;            //生成するイベントの数
     int[] randEventPos;   //発生するイベントの場所(空のオブジェクトの番号)
@@ -19,25 +17,43 @@ public class MapSystem : MonoBehaviour
     //使っているかどうか確認
     bool[] isUsed;
 
+    public static bool spawnEvents = false;
+
     // Start is called before the first frame update
     void Start()
     {
         //メモリの初期化
-        eventNum = new int[eventOccurrence.Length][];
+        eventPlaceNum = new string[eventOccurrence.Length][];
         isUsed = new bool[eventOccurrence.Length];
-        for (int i = 0; i < 5; ++i)
+        for (int i = 0; i <eventPlaceNum.Length; ++i)
         {
-            eventNum[i] = new int[eventOccurrence[i].GetComponent<EventPositionProperty>().eventNum.Length];
-            eventNum[i] = eventOccurrence[i].GetComponent<EventPositionProperty>().eventNum;
+            eventPlaceNum[i] = new string[eventOccurrence[i].GetComponent<EventPositionProperty>().eventNum.Length];
+            eventPlaceNum[i] = eventOccurrence[i].GetComponent<EventPositionProperty>().eventNum;
             isUsed[i] = eventOccurrence[i].GetComponent<EventPositionProperty>().isUsed;
         }
-        //コンソールには選んだ位置を出力
-        RandomFunction(id);
     }
+
+    public void Update()
+    {
+        if (!spawnEvents)
+            return;
+
+        SpawnEvents();
+    }
+
+    public void SpawnEvents()
+    {
+        for (int i = 0; i < Parser.eventIsOn.Length; i++)
+        {
+            if (Parser.eventIsOn[i])
+                RandomFunction(Parser.id[i]);
+        }
+    }
+
 
     /// /// /// /// /// /// /// /// /// /// /// 
     //IDに合わせて位置を出力する関数
-    private Transform RandomFunction(int id)
+    private Transform RandomFunction(string id)
     {
         //IDに合わせた位置を保存する
         List<Transform> transforms = new List<Transform>();
@@ -48,9 +64,9 @@ public class MapSystem : MonoBehaviour
             if (!isUsed[i])
             {
                 //その位置には私たちのイベントIDが許される
-                for(int j = 0; j<eventNum[i].Length; j++)
+                for(int j = 0; j< eventPlaceNum[i].Length; j++)
                 {
-                    if (id == eventNum[i][j])
+                    if (id == eventPlaceNum[i][j])
                     {
                         //そうであれば、その位置をリストに追加します
                         transforms.Add(eventOccurrence[i].transform);

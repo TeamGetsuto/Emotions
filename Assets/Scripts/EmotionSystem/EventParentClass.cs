@@ -14,7 +14,7 @@ public class EventParentClass : MonoBehaviour
     //イベント管理情報
     /// /// /// /// /// /// /// 
     [Header("Event ID")]
-    [SerializeField] int id;
+    public string id;
     protected int input = -1;
     protected bool eventEnded = false;
     private bool isInside = false;
@@ -45,9 +45,8 @@ public class EventParentClass : MonoBehaviour
     //イベントを始まる際
     protected void EventPlayerCheck(float radius, Vector3 eventOffset, int layerMask = 10)
     {
-        //if (Physics.CheckSphere(transform.position + eventOffset, radius, layerMask)&&!eventEnded)
-        if (Input.GetKey(KeyCode.Space) &&  !eventEnded)
-        {
+        if (Physics.CheckSphere(transform.position + eventOffset, radius, layerMask)&&!eventEnded)
+        { 
             Debug.Log("Inside");
             //仮
             /// //////////
@@ -67,6 +66,7 @@ public class EventParentClass : MonoBehaviour
             }
                 isInside = true;
         }
+
         else if(isInside)
         {
             EmotionEventHandler.current.EventExitTrigger(id);
@@ -77,7 +77,7 @@ public class EventParentClass : MonoBehaviour
 
     //イベントから離れる際
     /// /// /// /// /// /// /// 
-    protected void EventExit(int id)
+    protected void EventExit(string id)
     {
         if (id == this.id)
         {
@@ -92,7 +92,7 @@ public class EventParentClass : MonoBehaviour
     /// /// /// /// /// /// /// 
     //イベントの内容
     /// /// /// /// /// /// /// 
-    protected void EventStart(int id, int input)
+    protected void EventStart(string id, int input)
     {
         if (id == this.id)
         {
@@ -132,7 +132,7 @@ public class EventParentClass : MonoBehaviour
     /// /// /// /// /// /// /// 
     
     //イベント結果を管理する関数
-    protected void EventEnding(int id, int input)
+    protected void EventEnding(string id, int input)
     {
         if (id == this.id)
         {
@@ -143,23 +143,24 @@ public class EventParentClass : MonoBehaviour
                     ///
                     if (canUseHappiness)
                     {
-                    ///
-                        EmotionEventHandler.eventListManager[id][0] = true;
+                        ///
+                        Parser.eventListManager[Parser.GetIndexByEventID(id)][0] = true;
                     }
                     break;
                 case 1:
                     if (canUseSadness)
                     {
-                        EmotionEventHandler.eventListManager[id][1] = true;
+                        Parser.eventListManager[Parser.GetIndexByEventID(id)][1] = true;
                     }
                     break;
                 case 2:
                     if (canUseAnger)
                     {
-                        EmotionEventHandler.eventListManager[id][2] = true;
+                        Parser.eventListManager[Parser.GetIndexByEventID(id)][2] = true;
                     }
                     break;
             }
+            TurnSystem.eventHasEnded = true;
         }
     }
     /// /// /// /// /// /// /// 
