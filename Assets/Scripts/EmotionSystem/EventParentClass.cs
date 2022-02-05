@@ -7,8 +7,9 @@ public class EventParentClass : MonoBehaviour
     //イベントプロパティ
     /// /// /// /// /// /// /// 
     [Header("Event placement")]
-    [SerializeField] float eventRadius;
-    [SerializeField] Vector3 eventOffset;
+    [SerializeField] protected float eventRadius;
+    [SerializeField] protected Vector3 eventOffset;
+    [SerializeField] protected LayerMask layer;
     /// /// /// /// /// /// /// 
 
     //イベント管理情報
@@ -43,9 +44,9 @@ public class EventParentClass : MonoBehaviour
 
     /// /// /// /// /// /// /// 
     //イベントを始まる際
-    protected void EventPlayerCheck(float radius, Vector3 eventOffset, int layerMask = 10)
+    protected void EventPlayerCheck(float radius, Vector3 eventOffset)
     {
-        if (Physics.CheckSphere(transform.position + eventOffset, radius, layerMask)&&!eventEnded)
+        if (Physics.CheckSphere(transform.position + eventOffset, radius, layer) && !eventEnded)
         { 
             Debug.Log("Inside");
             //仮

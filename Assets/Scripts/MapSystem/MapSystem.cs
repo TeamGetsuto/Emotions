@@ -6,7 +6,6 @@ public class MapSystem : MonoBehaviour
 {
     //イベント発生位置
     [SerializeField] GameObject[] eventOccurrence;
-
     //場所ごとに発生できるイベント
     string[][] eventPlaceNum;
 
@@ -34,10 +33,10 @@ public class MapSystem : MonoBehaviour
     }
 
     public void Update()
-    {
+    {   
         if (!spawnEvents)
             return;
-
+        Debug.Log("Spawning");
         SpawnEvents();
     }
 
@@ -47,7 +46,9 @@ public class MapSystem : MonoBehaviour
         {
             if (Parser.eventIsOn[i])
                 RandomFunction(Parser.id[i]);
+            Instantiate(Parser.current.events[i]);
         }
+        spawnEvents = false;
     }
 
 

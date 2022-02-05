@@ -8,10 +8,10 @@ public class TestEvent : EventParentClass
 
 
     //プレイヤーが近いかどうか確認
-    void Update()
+    void FixedUpdate()
     {
         //プレイヤーの確認 ↓半径      ↓オフセット  使っているのはCheckSphere（球体）
-        EventPlayerCheck(0.5f, Vector3.zero);
+        EventPlayerCheck(base.eventRadius, base.eventOffset);
     }
     //例としてこういう形になります
     /// /// /// /// /// /// /// 
@@ -36,4 +36,10 @@ public class TestEvent : EventParentClass
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 
+    /// 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, base.eventRadius);
+    }
 }

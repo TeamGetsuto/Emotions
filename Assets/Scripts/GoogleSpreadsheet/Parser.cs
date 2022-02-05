@@ -4,13 +4,25 @@ using UnityEngine;
 
 public class Parser: MonoBehaviour
 {
+
+    #region Singleton
+    public static Parser current;
+    private void Awake()
+    {
+        if (current != null && current != this)
+            Destroy(this);
+        else current = this;
+    }
+    #endregion
+
     //イベントの　id と　結果
     public static bool[][] eventListManager;
     public static bool[] eventIsOn;
     public static string[] id;
 
     public static bool isLoad = false;
-    public static bool spawnEvents = false;
+    public bool loadIsOver = false;
+
 
     public struct EventInformation
     {
@@ -28,11 +40,7 @@ public class Parser: MonoBehaviour
 
     public GameObject[] events;
 
-    int today;
-    int turnNow;
 
-
-    
     void EventListInitialize()
     {
         eventIsOn = new bool[eventInformation.Length];  
@@ -60,10 +68,12 @@ public class Parser: MonoBehaviour
             DataParsing();
             isLoad = false;
             Debug.Log("イベントをロードしきれました");
+            loadIsOver = true;
         }
-
-        if(TurnSystem.isTimeChange)
-        { 
+        
+        if(TurnSystem.isTimeChange&&loadIsOver)
+        {
+            Debug.Log("StartedCheckingEvents");
             List<int> turnOnEvents = new List<int>();
 
             turnOnEvents = ReturnAllGoodEvents();
@@ -72,7 +82,7 @@ public class Parser: MonoBehaviour
             {
                 eventIsOn[turnOnEvents[i]] = true;
             }
-            spawnEvents = true;
+            MapSystem.spawnEvents = true;
             TurnSystem.isTimeChange = false;
         }
     }
@@ -86,6 +96,7 @@ public class Parser: MonoBehaviour
             {
                 for(int j = 0; j< eventInformation.Length; j ++ )
                 {
+                    Debug.Log(eventInformation[i].id + " ! !  " + id[j]);
                     if(eventInformation[i].id == id[j])
                     {
                         ret.Add(j);
@@ -98,12 +109,13 @@ public class Parser: MonoBehaviour
 
     bool CheckingEvents(EventInformation eventInformation)
     {
+        
         bool cont = false;
         //日付の確認
         {
             foreach (int day in eventInformation.day)
             {
-                if (day == today)
+                if (day == TurnSystem.dayCounter)
                     cont = true;
             }
             if (!cont)
@@ -115,26 +127,26 @@ public class Parser: MonoBehaviour
             int temp = eventInformation.time & 0b001;
             if ( temp == 0b001 )
             {
-                if (turnNow == 0 || turnNow == 1)
+                if (TurnSystem.turnNum == 0 || TurnSystem.turnNum == 1)
                     cont = true;
             }
             temp = eventInformation.time & 0b010;
             if (temp == 0b010)
             {
-                if (turnNow == 1 || turnNow == 2)
+                if (TurnSystem.turnNum == 1 || TurnSystem.turnNum == 2)
                     cont = true;
             }
             temp = eventInformation.time & 0b100;
             if (temp == 0b100)
             {
-                if (turnNow == 3 || turnNow == 4)
+                if (TurnSystem.turnNum == 3 || TurnSystem.turnNum == 4)
                     cont = true;
             }
             if (!cont)
                 return false;
         }
         //発生条件を確認
-      
+        Debug.Log("SecondCheck");
 
         return cont;
     }
