@@ -31,6 +31,8 @@ public class EmotionEventHandler : MonoBehaviour
     /// イベント結果
     public event Action<string, int> onEventUnlock;
 
+    public event Action onTurnChange;
+
     //イベントに近づく
     public void EventTrigger(string id, int input)
     {
@@ -47,6 +49,14 @@ public class EmotionEventHandler : MonoBehaviour
     {
         if (onEventUnlock != null)
             onEventUnlock(id, input);
+    }
+
+    public void OnTurnChange()
+    {
+        if (onTurnChange != null)
+        {
+            onTurnChange();
+        }
     }
 
 }

@@ -33,15 +33,17 @@ public class MapSystem : MonoBehaviour
     }
 
     public void Update()
-    {   
-        if (!spawnEvents)
-            return;
-        Debug.Log("Spawning");
-        SpawnEvents();
+    {
+        if (spawnEvents)
+        {
+            Debug.Log("Spawning");
+            SpawnEvents();
+        }
     }
 
     public void SpawnEvents()
     {
+        spawnEvents = false;
         for (int i = 0; i < Parser.eventIsOn.Length; i++)
         {
             Transform temp = null;
@@ -49,11 +51,12 @@ public class MapSystem : MonoBehaviour
                 temp = RandomFunction(Parser.id[i]);
 
             if (temp == null)
-                return;
+                continue;
 
             Instantiate(Parser.current.events[i], temp.position, temp.rotation);
         }
-        spawnEvents = false;
+        
+
     }
 
 

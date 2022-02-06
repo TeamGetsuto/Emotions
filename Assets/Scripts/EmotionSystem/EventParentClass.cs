@@ -15,6 +15,7 @@ public class EventParentClass : MonoBehaviour
     //イベント管理情報
     /// /// /// /// /// /// /// 
     [Header("Event ID")]
+    private float destroyTime = 5.0f;
     public string id;
     protected int input = -1;
     protected bool eventEnded = false;
@@ -35,6 +36,7 @@ public class EventParentClass : MonoBehaviour
         EmotionEventHandler.current.onEventEnter += EventStart;
         EmotionEventHandler.current.onEventExit += EventExit;
         EmotionEventHandler.current.onEventUnlock += EventEnding;
+        EmotionEventHandler.current.onTurnChange += DestroyHelper;
     }
     /// /// /// /// /// /// /// 
     
@@ -162,10 +164,27 @@ public class EventParentClass : MonoBehaviour
                     break;
             }
             TurnSystem.eventHasEnded = true;
+            //イベントを破棄
+            StartCoroutine("DestroyObject");   
         }
     }
-    /// /// /// /// /// /// /// 
 
+
+    //イベントを破棄する前の追加時間
+    /// /// /// /// /// /// /// 
+    void DestroyHelper()
+    {
+        StartCoroutine("DestroyObject");
+    }
+
+
+    IEnumerator DestroyObject()
+    {
+        yield return new WaitForSeconds(destroyTime);
+        EmotionEventHandler.current.onTurnChange -= DestroyHelper;
+        Destroy(gameObject);
+    }
+    /// /// /// /// /// /// /// 
 
     /// /// /// /// /// /// /// 
     //     バーチャル関数      //

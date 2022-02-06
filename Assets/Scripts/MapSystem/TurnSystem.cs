@@ -82,14 +82,14 @@ public class TurnSystem : MonoBehaviour
         if(turnNum == 2)
         {
             isTimeChange = true;
-
+            EmotionEventHandler.current.OnTurnChange();
             Debug.Log("Noon");
         }
 
         if(turnNum == 4)
         {
             isTimeChange = true;
-
+            EmotionEventHandler.current.OnTurnChange();
             Debug.Log("Night");
         }
     }
