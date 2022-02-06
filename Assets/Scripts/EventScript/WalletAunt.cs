@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Event3 : EventParentClass
+public class WalletAunt : EventParentClass
 {
     //eventHasEnded ‚ğtrue ‚Éİ’è‚·‚é
-
-
+    SpriteRenderer spriteRenderer;
+    [SerializeField] Sprite spriteHappy;
+    [SerializeField] Sprite spriteSad;
 
     //‰Šú‰»‚Í‚±‚Á‚¿I
     /// /// /// /// /// /// /// ///
     private void Awake()
     {
-        
+        spriteRenderer = transform.Find("Effect").GetComponent<SpriteRenderer>();
     }
 
     /// /// /// /// /// /// /// ///
@@ -31,15 +32,15 @@ public class Event3 : EventParentClass
 
     protected override void EventHappiness()
     {
-        Debug.Log("Šì‚Ñ‚ğ”­¶‚µ‚Ü‚µ‚½");   
-        
+        Debug.Log("Šì‚Ñ‚ğ”­¶‚µ‚Ü‚µ‚½");
+        spriteRenderer.sprite = spriteHappy;
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
         Debug.Log("”ß‚µ‚İ‚ğ”­¶‚µ‚Ü‚µ‚½");
- 
+        spriteRenderer.sprite = spriteSad;
         animatiionEnded = true;
     }
 

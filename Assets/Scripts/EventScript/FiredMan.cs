@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Event1: EventParentClass
+public class FiredMan: EventParentClass
 {
     //eventHasEnded ‚ğtrue ‚Éİ’è‚·‚é
 
-
+    SpriteRenderer spriteRenderer;
+    [SerializeField] Sprite spriteHappy;
+    [SerializeField] Sprite spriteAnger;
 
     //‰Šú‰»‚Í‚±‚Á‚¿I
     /// /// /// /// /// /// /// ///
     private void Awake()
     {
-        
+        spriteRenderer = transform.Find("Effect").GetComponent<SpriteRenderer>();
     }
 
     /// /// /// /// /// /// /// ///
@@ -31,8 +33,8 @@ public class Event1: EventParentClass
 
     protected override void EventHappiness()
     {
-        Debug.Log("Šì‚Ñ‚ğ”­¶‚µ‚Ü‚µ‚½");   
-        
+        Debug.Log("Šì‚Ñ‚ğ”­¶‚µ‚Ü‚µ‚½");
+        spriteRenderer.sprite = spriteHappy;
         animatiionEnded = true;
     }
 
@@ -46,6 +48,7 @@ public class Event1: EventParentClass
     protected override void EventAnger()
     {
         Debug.Log("“{‚è‚ğ”­¶‚µ‚Ü‚µ‚½");
+        spriteRenderer.sprite = spriteAnger;
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 
