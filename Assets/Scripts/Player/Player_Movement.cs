@@ -35,7 +35,7 @@ public class Player_Movement : MonoBehaviour
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
 
-        if (x == 0 && z == 0)
+        if (x != 0 && z != 0)
         {
             Player_SE();
         }
@@ -46,8 +46,10 @@ public class Player_Movement : MonoBehaviour
         direction = Vector3.zero;
 
         //“ü—Í‚µ‚½‚ç‚Ç‚Á‚¿‚É“®‚­‚©
-        direction.x = x * runForce;
-        direction.z = z * runForce;
+        //direction.x = x * runForce;
+        //direction.z = z * runForce;
+
+        direction = new Vector3(x, 0, z).normalized * runForce;
 
         playerRig.AddForce(runForceMultiplier * (direction - playerRig.velocity));
         //Debug.Log(direction.x + " " + direction.z + " " + x + " " + z);
