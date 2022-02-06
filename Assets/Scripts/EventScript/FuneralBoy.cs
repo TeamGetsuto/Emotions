@@ -2,20 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Event7 : EventParentClass
+public class FuneralBoy : EventParentClass
 {
     //eventHasEnded ‚ğtrue ‚Éİ’è‚·‚é
 
 
+    /// /// /// /// /// /// /// ///
 
-    //‰Šú‰»‚Í‚±‚Á‚¿I
-    /// /// /// /// /// /// /// ///
-    private void Awake()
-    {
-        
-    }
-    /// /// /// /// /// /// /// ///
-    
     //‚±‚ÌŠÖ”‚ğ•Ï‚¦‚½‚ç‚È‚¢I
     /// /// /// /// /// /// /// ///
     void FixedUpdate()
@@ -38,7 +31,7 @@ public class Event7 : EventParentClass
     protected override void EventSadness()
     {
         Debug.Log("”ß‚µ‚İ‚ğ”­¶‚µ‚Ü‚µ‚½");
- 
+        EmotionSystem.current.PlayerEventEmotionChange(-5, 10, 0);
         animatiionEnded = true;
     }
 

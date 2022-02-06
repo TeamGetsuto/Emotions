@@ -2,21 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Event6 : EventParentClass
+public class MovingGirl : EventParentClass
 {
     //eventHasEnded ‚ğtrue ‚Éİ’è‚·‚é
-
-
-
-    //‰Šú‰»‚Í‚±‚Á‚¿I
-    /// /// /// /// /// /// /// ///
-    private void Awake()
-    {
-        
-    }
-
-    /// /// /// /// /// /// /// ///
-
+    
     //‚±‚ÌŠÖ”‚ğ•Ï‚¦‚½‚ç‚È‚¢I
     /// /// /// /// /// /// /// ///
     void FixedUpdate()
@@ -31,15 +20,15 @@ public class Event6 : EventParentClass
 
     protected override void EventHappiness()
     {
-        Debug.Log("Šì‚Ñ‚ğ”­¶‚µ‚Ü‚µ‚½");   
-        
+        Debug.Log("Šì‚Ñ‚ğ”­¶‚µ‚Ü‚µ‚½");
+        EmotionSystem.current.PlayerEventEmotionChange(5, 5, 0);
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
         Debug.Log("”ß‚µ‚İ‚ğ”­¶‚µ‚Ü‚µ‚½");
- 
+        EmotionSystem.current.PlayerEventEmotionChange(5, 5, 0);
         animatiionEnded = true;
     }
 
