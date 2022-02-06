@@ -90,11 +90,14 @@ public class Parser: MonoBehaviour
             }
 
             turnOnEvents = ReturnAllGoodEvents();
+
             Debug.Log("!!!!!!!!!" + turnOnEvents.Count);
+            
             for (int i = 0; i < turnOnEvents.Count; i++)
             {
                 eventIsOn[turnOnEvents[i]] = true;
             }
+
             MapSystem.spawnEvents = true;
             TurnSystem.isTimeChange = false;
         }
@@ -112,7 +115,6 @@ public class Parser: MonoBehaviour
                     if(eventInformation[i].id == id[j])
                     {
                         ret.Add(j);
-                        Debug.LogError(id[j]);
                     }
                 }
             }

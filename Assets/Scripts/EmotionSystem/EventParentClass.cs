@@ -36,6 +36,7 @@ public class EventParentClass : MonoBehaviour
         EmotionEventHandler.current.onEventEnter += EventStart;
         EmotionEventHandler.current.onEventExit += EventExit;
         EmotionEventHandler.current.onEventUnlock += EventEnding;
+        EmotionEventHandler.current.onTurnChange += DestroyHelper;
     }
     /// /// /// /// /// /// /// 
     
@@ -171,9 +172,16 @@ public class EventParentClass : MonoBehaviour
 
     //イベントを破棄する前の追加時間
     /// /// /// /// /// /// /// 
+    void DestroyHelper()
+    {
+        StartCoroutine("DestroyObject");
+    }
+
+
     IEnumerator DestroyObject()
     {
         yield return new WaitForSeconds(destroyTime);
+        EmotionEventHandler.current.onTurnChange -= DestroyHelper;
         Destroy(gameObject);
     }
     /// /// /// /// /// /// /// 
