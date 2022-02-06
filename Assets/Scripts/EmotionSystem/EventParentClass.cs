@@ -15,6 +15,7 @@ public class EventParentClass : MonoBehaviour
     //イベント管理情報
     /// /// /// /// /// /// /// 
     [Header("Event ID")]
+    private float destroyTime = 5.0f;
     public string id;
     protected int input = -1;
     protected bool eventEnded = false;
@@ -162,10 +163,20 @@ public class EventParentClass : MonoBehaviour
                     break;
             }
             TurnSystem.eventHasEnded = true;
+            //イベントを破棄
+            StartCoroutine("DestroyObject");   
         }
     }
-    /// /// /// /// /// /// /// 
 
+
+    //イベントを破棄する前の追加時間
+    /// /// /// /// /// /// /// 
+    IEnumerator DestroyObject()
+    {
+        yield return new WaitForSeconds(destroyTime);
+        Destroy(gameObject);
+    }
+    /// /// /// /// /// /// /// 
 
     /// /// /// /// /// /// /// 
     //     バーチャル関数      //

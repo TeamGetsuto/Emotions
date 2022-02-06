@@ -56,6 +56,7 @@ public class Parser: MonoBehaviour
 
     public bool check = false;
 
+    private float timer = 6.0f;
 
 
     private void Update()
@@ -73,11 +74,23 @@ public class Parser: MonoBehaviour
         
         if(TurnSystem.isTimeChange&&loadIsOver)
         {
+            //昼・夜の前に6秒を待ってイベント発生します
+            timer -= Time.deltaTime;
+            if (timer > 0)
+                return;
+            timer = 6.0f;
+
             Debug.Log("StartedCheckingEvents");
+            
             List<int> turnOnEvents = new List<int>();
 
-            turnOnEvents = ReturnAllGoodEvents();
+            for (int i = 0; i < eventIsOn.Length; i++)
+            {
+                eventIsOn[i] = false;
+            }
 
+            turnOnEvents = ReturnAllGoodEvents();
+            Debug.Log("!!!!!!!!!" + turnOnEvents.Count);
             for (int i = 0; i < turnOnEvents.Count; i++)
             {
                 eventIsOn[turnOnEvents[i]] = true;
@@ -96,10 +109,10 @@ public class Parser: MonoBehaviour
             {
                 for(int j = 0; j< eventInformation.Length; j ++ )
                 {
-                    Debug.Log(eventInformation[i].id + " ! !  " + id[j]);
                     if(eventInformation[i].id == id[j])
                     {
                         ret.Add(j);
+                        Debug.LogError(id[j]);
                     }
                 }
             }
