@@ -52,7 +52,6 @@ public class Loader : MonoBehaviour
             Parser.eventInformation[i].additionalInformationString = lineData[i, 5];
 
         }
-        Parser.isLoad = true;
     }
 
 

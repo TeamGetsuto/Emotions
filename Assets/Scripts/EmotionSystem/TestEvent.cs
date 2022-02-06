@@ -8,13 +8,6 @@ public class TestEvent : EventParentClass
 
 
 
-    //‰Šú‰»‚Í‚±‚Á‚¿I
-    /// /// /// /// /// /// /// ///
-    private void Awake()
-    {
-        
-    }
-
     /// /// /// /// /// /// /// ///
 
     //‚±‚ÌŠÖ”‚ğ•Ï‚¦‚½‚ç‚È‚¢I

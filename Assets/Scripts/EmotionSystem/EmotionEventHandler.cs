@@ -33,6 +33,12 @@ public class EmotionEventHandler : MonoBehaviour
 
     public event Action onTurnChange;
 
+    public event Action onLoadEnding;
+
+    public event Action onNewTimeStart;
+
+    public event Action onChosedEvents;
+
     //ƒCƒxƒ“ƒg‚É‹ß‚Ã‚­
     public void EventTrigger(string id, int input)
     {
@@ -51,7 +57,7 @@ public class EmotionEventHandler : MonoBehaviour
             onEventUnlock(id, input);
     }
 
-    public void OnTurnChange()
+    public void OnTurnChangeTrigger()
     {
         if (onTurnChange != null)
         {
@@ -59,4 +65,19 @@ public class EmotionEventHandler : MonoBehaviour
         }
     }
 
+    public void OnLoadEndingTrigger()
+    {
+        if (onLoadEnding != null)
+        {
+            onLoadEnding();
+        }
+    }
+
+    public void OnChosedEventsTrigger()
+    {
+        if (onChosedEvents != null)
+        {
+            onChosedEvents();
+        }
+    }
 }
