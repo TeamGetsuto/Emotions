@@ -6,22 +6,20 @@ public class Player_Movement : MonoBehaviour
 {
     //プレイヤーの移動
     Rigidbody playerRig;
-    Vector3 direction;
+    public Vector3 direction;
     [SerializeField] float runForce = 10;
     [SerializeField] float runForceMultiplier = 10; //移動速度の入力に対する追従度
     float x, z;
 
-    //プレイヤーの音
-    [SerializeField] AudioSource playerAud;
-    [SerializeField] AudioClip footStep;
-
     //プレイヤースプライト
+    SpriteRenderer spriteRenderer;
+    [SerializeField] Sprite[] sprites;
 
     // Start is called before the first frame update
     void Start()
     {
         playerRig = GetComponent<Rigidbody>();
-        playerAud = GetComponent<AudioSource>();
+        spriteRenderer = transform.Find("Player_Front").GetComponent<SpriteRenderer>();
     }
 
     void FixedUpdate()
@@ -35,9 +33,21 @@ public class Player_Movement : MonoBehaviour
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
 
-        if (x != 0 && z != 0)
+        if (x == 0 && z < 0)　//正面
         {
-            Player_SE();
+            spriteRenderer.sprite = sprites[0];
+        }
+        if (x < 0)            //左
+        {
+            spriteRenderer.sprite = sprites[1];
+        }
+        if (x > 0)            //右
+        {
+            spriteRenderer.sprite = sprites[2];
+        }
+        if (z > 0 && x == 0)  //後
+        {
+            spriteRenderer.sprite = sprites[3];
         }
     }
 
@@ -54,12 +64,6 @@ public class Player_Movement : MonoBehaviour
         playerRig.AddForce(runForceMultiplier * (direction - playerRig.velocity));
         //Debug.Log(direction.x + " " + direction.z + " " + x + " " + z);
 
+        
     }
-    void Player_SE()
-    {
-        playerAud.clip = footStep;
-        playerAud.Play();
-        //playerAud.PlayOneShot(footStep);
-    }
-
 }
