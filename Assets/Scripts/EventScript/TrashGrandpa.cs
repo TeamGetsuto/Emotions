@@ -34,13 +34,14 @@ public class TrashGrandpa : EventParentClass
     protected override void EventSadness()
     {
         Debug.Log("2");
- 
+
         animatiionEnded = true;
     }
 
     protected override void EventAnger()
     {
         Debug.Log("3");
+
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 

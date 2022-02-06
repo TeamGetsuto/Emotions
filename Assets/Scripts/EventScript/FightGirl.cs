@@ -35,13 +35,14 @@ public class FightGirl: EventParentClass
     {
         Debug.Log("Šì‚Ñ‚ğ”­¶‚µ‚Ü‚µ‚½");
         spriteRenderer.sprite = spriteHappy;
+
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
         Debug.Log("”ß‚µ‚İ‚ğ”­¶‚µ‚Ü‚µ‚½");
- 
+
         animatiionEnded = true;
     }
 
@@ -49,6 +50,7 @@ public class FightGirl: EventParentClass
     {
         Debug.Log("“{‚è‚ğ”­¶‚µ‚Ü‚µ‚½");
         spriteRenderer.sprite = spriteAnger;
+
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 

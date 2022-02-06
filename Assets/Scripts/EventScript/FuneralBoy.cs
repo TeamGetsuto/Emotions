@@ -31,7 +31,7 @@ public class FuneralBoy : EventParentClass
     protected override void EventSadness()
     {
         Debug.Log("îﬂÇµÇ›Çî≠ê∂ÇµÇ‹ÇµÇΩ");
-        EmotionSystem.current.PlayerEventEmotionChange(-5, 10, 0);
+
         animatiionEnded = true;
     }
 
