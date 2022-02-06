@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class MapSystem : MonoBehaviour
 {
+    
+    
     //イベント発生位置
     [SerializeField] GameObject[] eventOccurrence;
     //場所ごとに発生できるイベント
     string[][] eventPlaceNum;
-
-    int count;            //生成するイベントの数
-    int[] randEventPos;   //発生するイベントの場所(空のオブジェクトの番号)
 
     /// /// /// /// /// /// /// 
     //使っているかどうか確認
@@ -30,25 +29,25 @@ public class MapSystem : MonoBehaviour
             eventPlaceNum[i] = eventOccurrence[i].GetComponent<EventPositionProperty>().eventNum;
             isUsed[i] = eventOccurrence[i].GetComponent<EventPositionProperty>().isUsed;
         }
-    }
-
-    public void Update()
-    {   
-        if (!spawnEvents)
-            return;
-        Debug.Log("Spawning");
-        SpawnEvents();
+        EmotionEventHandler.current.onChosedEvents += SpawnEvents;
     }
 
     public void SpawnEvents()
     {
+        spawnEvents = false;
         for (int i = 0; i < Parser.eventIsOn.Length; i++)
         {
+            Transform temp = null;
             if (Parser.eventIsOn[i])
-                RandomFunction(Parser.id[i]);
-            Instantiate(Parser.current.events[i]);
+                temp = RandomFunction(Parser.id[i]);
+
+            if (temp == null)
+                continue;
+
+            Instantiate(Parser.current.events[i], temp.position, temp.rotation);
         }
-        spawnEvents = false;
+        
+
     }
 
 

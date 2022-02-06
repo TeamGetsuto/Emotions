@@ -5,59 +5,59 @@ using UnityEngine;
 public class Player_Movement : MonoBehaviour
 {
     //プレイヤーの移動
-    Rigidbody playerRigid;
+    Rigidbody playerRig;
     Vector3 direction;
-    [SerializeField] float speed = 3.0f;
-    bool isRun = false;
+    [SerializeField] float runForce = 10;
+    [SerializeField] float runForceMultiplier = 10; //移動速度の入力に対する追従度
+    float x, z;
 
     //プレイヤーの音
-    [SerializeField] AudioSource playerAudio;
-    [SerializeField] AudioClip footsteps_SE;
-    [SerializeField] AudioClip handgun_SE;
+    [SerializeField] AudioSource playerAud;
+    [SerializeField] AudioClip footStep;
+
+    //プレイヤースプライト
 
     // Start is called before the first frame update
     void Start()
     {
-        playerRigid = GetComponent<Rigidbody>();
-        playerAudio = GetComponent<AudioSource>();
+        playerRig = GetComponent<Rigidbody>();
+        playerAud = GetComponent<AudioSource>();
     }
 
     void FixedUpdate()
     {
-        //ｘ方向、ｚ方向に移動
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-        direction = new Vector3(x * speed, 0, z * speed);
-
-        if (x != 0 || z!= 0)
-        {
-            isRun = true;
-            Debug.Log(isRun + "," + x + "," + z);
-            playerRigid.MovePosition(transform.position + direction * Time.deltaTime);
-        }
-        else
-        {
-            Debug.Log(isRun + ", " +"停止");
-        }
+        Player_Move();
     }
 
     void Update()
     {
-        if (isRun)
+        //入力
+        x = Input.GetAxis("Horizontal");
+        z = Input.GetAxis("Vertical");
+
+        if (x == 0 && z == 0)
         {
-            Footsteps_SE();
+            Player_SE();
         }
     }
 
-    //足音
-    void Footsteps_SE()
+    void Player_Move()
     {
-        playerAudio.PlayOneShot(footsteps_SE);
+        direction = Vector3.zero;
+
+        //入力したらどっちに動くか
+        direction.x = x * runForce;
+        direction.z = z * runForce;
+
+        playerRig.AddForce(runForceMultiplier * (direction - playerRig.velocity));
+        //Debug.Log(direction.x + " " + direction.z + " " + x + " " + z);
+
+    }
+    void Player_SE()
+    {
+        playerAud.clip = footStep;
+        playerAud.Play();
+        //playerAud.PlayOneShot(footStep);
     }
 
-    //打ち出す
-    void HandGun_SE()
-    {
-        playerAudio.PlayOneShot(handgun_SE);
-    }
 }
