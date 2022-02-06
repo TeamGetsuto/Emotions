@@ -41,7 +41,6 @@ public class FiredMan: EventParentClass
     protected override void EventSadness()
     {
         Debug.Log("”ß‚µ‚İ‚ğ”­¶‚µ‚Ü‚µ‚½");
- 
         animatiionEnded = true;
     }
 

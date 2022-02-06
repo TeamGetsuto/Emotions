@@ -36,7 +36,6 @@ public class LostGirl : EventParentClass
     {
         Debug.Log("Šì‚Ñ‚ğ”­¶‚µ‚Ü‚µ‚½");
         spriteRenderer.sprite = spriteHappy;
-        
         animatiionEnded = true;
     }
 
@@ -50,7 +49,6 @@ public class LostGirl : EventParentClass
     {
         Debug.Log("“{‚è‚ğ”­¶‚µ‚Ü‚µ‚½");
         spriteRenderer.sprite = spriteAnger;
-
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 

@@ -31,6 +31,16 @@ public class EmoteButtonControl : MonoBehaviour
     SE_Initializer audioPlayer;
     EventParentClass eventSystem;
 
+    string emotion = "";
+
+    private void Awake()
+    {
+        EmotionEventHandler.current.onShowButtons += ButtonShow;
+        EmotionEventHandler.current.onCloseButtons += ButtonClose;
+
+        EmotionEventHandler.current.onButtonPush += InputEmot;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,40 +69,33 @@ public class EmoteButtonControl : MonoBehaviour
         ButtonInitialize();
     }
 
-    // Update is called once per frame
-    void Update()
+    void ButtonShow(bool h, bool s, bool a)
     {
-        //if(eventSystem.isInside)
-
-        //仮の処理
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if (isButtonPlaced)
         {
-            if(isButtonPlaced)
-            {
-                return;
-            }
+            return;
+        }
 
+        if(h)
             ButtonPlacement(happinessButton, placeTop);
+        if(s)
             ButtonPlacement(sadnessButton, placeLeft);
+        if(a)
             ButtonPlacement(angerButton, placeRight);
-        }
-
-        //if(!eventSystem.isInside) || if(isButtonPushed)
-        if(isButtonPushed)
-        {
-            ButtonRemove(happinessButton);
-            ButtonRemove(sadnessButton);
-            ButtonRemove(angerButton);
-        }
-
-        isButtonPushed = false;
-
     }
 
+    void ButtonClose()
+    {
+        string emotion = "";
+        ButtonRemove(happinessButton);
+        ButtonRemove(sadnessButton);
+        ButtonRemove(angerButton);
+    }
     void ButtonInitialize()
     {
         //ボタンを非表示に
         happinessButton.SetActive(false);
+        
         sadnessButton.SetActive(false);
         angerButton.SetActive(false);
 
@@ -104,9 +107,14 @@ public class EmoteButtonControl : MonoBehaviour
 
         //イベントリスナ―の追加
         H_Button.onClick.AddListener(HappinessButton);
+
+
         S_Button.onClick.AddListener(SadnessButton);
         A_Button.onClick.AddListener(AngerButton);
     }
+
+
+
 
     void ButtonPlacement(GameObject obj,Vector3 place)
     {
@@ -121,12 +129,14 @@ public class EmoteButtonControl : MonoBehaviour
         isButtonPlaced = false;
     }
 
+
     public void HappinessButton()
     {
         //後から追加
         audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.emoteSeVolume);
         isButtonPushed = true;
         Debug.Log("Happiness");
+        emotion = "Hap";
     }
 
     public void SadnessButton()
@@ -135,6 +145,7 @@ public class EmoteButtonControl : MonoBehaviour
         audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.emoteSeVolume);
         isButtonPushed = true;
         Debug.Log("Sadness");
+        emotion = "Sad";
     }
 
     public void AngerButton()
@@ -143,6 +154,28 @@ public class EmoteButtonControl : MonoBehaviour
         audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.emoteSeVolume);
         isButtonPushed = true;
         Debug.Log("Anger");
+        emotion = "Ang";
+    }
+
+    int InputEmot()
+    {
+
+        int a = InputEmotion(emotion);
+        emotion = "";
+        return a;
+    }
+
+    int InputEmotion(string emotion)
+    {
+        if (emotion == "Hap")
+        {
+            return 0;
+        }
+        if (emotion == "Sad")
+            return 1;
+        if (emotion == "Ang")
+            return 2;
+        return -1;
     }
 
 }

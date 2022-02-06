@@ -37,6 +37,8 @@ public class EventParentClass : MonoBehaviour
         EmotionEventHandler.current.onEventExit += EventExit;
         EmotionEventHandler.current.onEventUnlock += EventEnding;
         EmotionEventHandler.current.onTurnChange += DestroyHelper;
+
+
     }
     /// /// /// /// /// /// /// 
     
@@ -45,7 +47,8 @@ public class EventParentClass : MonoBehaviour
     /// /// /// /// /// /// /// 
 
     /// /// /// /// /// /// /// 
-    //イベントを始まる際
+    //イベントを始まる際  
+
     protected void EventPlayerCheck(float radius, Vector3 eventOffset)
     {
         if (Physics.CheckSphere(transform.position + eventOffset, radius, layer) && !eventEnded)
@@ -53,18 +56,14 @@ public class EventParentClass : MonoBehaviour
             Debug.Log("Inside");
             //仮
             /// //////////
-            
-            if (Input.GetKeyDown(KeyCode.Q))
-                input = 0;
-            if (Input.GetKeyDown(KeyCode.W))
-                input = 1;
-            if (Input.GetKeyDown(KeyCode.E))
-                input = 2;
-            if (Input.GetKeyDown(KeyCode.D))
-                input = 3;
+            EmotionEventHandler.current.OnShowButtonsTrigger(canUseHappiness, canUseSadness, canUseAnger);
+
+            input = EmotionEventHandler.current.OnButtonPush();
+
             /// //////////
             if (input != -1)
             {
+                EmotionEventHandler.current.OnCloseButtons();
                 EmotionEventHandler.current.EventTrigger(id, input);
             }
                 isInside = true;
@@ -85,6 +84,7 @@ public class EventParentClass : MonoBehaviour
         if (id == this.id)
         {
             Debug.Log("Out");
+            EmotionEventHandler.current.OnCloseButtons();
             //UIを閉じる
         }
     }
@@ -160,6 +160,7 @@ public class EventParentClass : MonoBehaviour
                     if (canUseAnger)
                     {
                         Parser.eventListManager[Parser.GetIndexByEventID(id)][2] = true;
+
                     }
                     break;
             }
@@ -181,6 +182,7 @@ public class EventParentClass : MonoBehaviour
     IEnumerator DestroyObject()
     {
         yield return new WaitForSeconds(destroyTime);
+        EmotionEventHandler.current.OnCloseButtons();
         EmotionEventHandler.current.onTurnChange -= DestroyHelper;
         Destroy(gameObject);
     }

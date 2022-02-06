@@ -52,9 +52,9 @@ public class EmotionSystem : MonoBehaviour
     public void PlayerEventEmotionChange(int eHap, int eSad, int eAng, Action resultAction = null)
     {
         //このシステムにある値を変えます
-        current.playerEmotionHappiness -= eHap;
-        current.playerEmotionSadness -= eSad;
-        current.playerEmotionAnger -= eAng;
+        current.playerEmotionHappiness += eHap;
+        current.playerEmotionSadness += eSad;
+        current.playerEmotionAnger += eAng;
         resultAction();
     }
 
