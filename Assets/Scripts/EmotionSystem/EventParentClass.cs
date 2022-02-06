@@ -51,6 +51,7 @@ public class EventParentClass : MonoBehaviour
             Debug.Log("Inside");
             //‰¼
             /// //////////
+            
             if (Input.GetKeyDown(KeyCode.Q))
                 input = 0;
             if (Input.GetKeyDown(KeyCode.W))
@@ -60,7 +61,6 @@ public class EventParentClass : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.D))
                 input = 3;
             /// //////////
-            
             if (input != -1)
             {
                 EmotionEventHandler.current.EventTrigger(id, input);

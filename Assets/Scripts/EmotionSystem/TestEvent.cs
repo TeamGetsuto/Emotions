@@ -7,32 +7,45 @@ public class TestEvent : EventParentClass
     //eventHasEnded をtrue に設定する
 
 
-    //プレイヤーが近いかどうか確認
+
+    //初期化はこっち！
+    /// /// /// /// /// /// /// ///
+    private void Awake()
+    {
+        
+    }
+
+    /// /// /// /// /// /// /// ///
+
+    //この関数を変えたらない！
+    /// /// /// /// /// /// /// ///
     void FixedUpdate()
     {
         //プレイヤーの確認 ↓半径      ↓オフセット  使っているのはCheckSphere（球体）
         EventPlayerCheck(base.eventRadius, base.eventOffset);
     }
+    /// /// /// /// /// /// /// ///
+    
     //例としてこういう形になります
     /// /// /// /// /// /// /// 
 
     protected override void EventHappiness()
     {
-        Debug.Log("1");   
+        Debug.Log("喜びを発生しました");   
         
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
-        Debug.Log("2");
+        Debug.Log("悲しみを発生しました");
  
         animatiionEnded = true;
     }
 
     protected override void EventAnger()
     {
-        Debug.Log("3");
+        Debug.Log("怒りを発生しました");
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 
@@ -40,6 +53,6 @@ public class TestEvent : EventParentClass
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, base.eventRadius);
+        Gizmos.DrawWireSphere(transform.position + base.eventOffset, base.eventRadius);
     }
 }
