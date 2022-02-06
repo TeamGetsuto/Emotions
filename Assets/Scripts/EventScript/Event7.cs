@@ -14,9 +14,8 @@ public class Event7 : EventParentClass
     {
         
     }
-
     /// /// /// /// /// /// /// ///
-
+    
     //‚±‚ÌŠÖ”‚ğ•Ï‚¦‚½‚ç‚È‚¢I
     /// /// /// /// /// /// /// ///
     void FixedUpdate()
