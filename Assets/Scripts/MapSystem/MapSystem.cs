@@ -44,9 +44,14 @@ public class MapSystem : MonoBehaviour
     {
         for (int i = 0; i < Parser.eventIsOn.Length; i++)
         {
+            Transform temp = null;
             if (Parser.eventIsOn[i])
-                RandomFunction(Parser.id[i]);
-            Instantiate(Parser.current.events[i]);
+                temp = RandomFunction(Parser.id[i]);
+
+            if (temp == null)
+                return;
+
+            Instantiate(Parser.current.events[i], temp.position, temp.rotation);
         }
         spawnEvents = false;
     }
