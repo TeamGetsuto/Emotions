@@ -29,11 +29,11 @@ public class EmotionSystem : MonoBehaviour
 
     [Header("Emotions starting values")]
     [Range(0,100)]  //Šì‚Ñ
-    [SerializeField] int playerEmotionHappiness;
+    public int playerEmotionHappiness;
     [Range(0,100)]  //”ß‚µ‚Ý
-    [SerializeField] int playerEmotionSadness;
+    public int playerEmotionSadness;
     [Range(0,100)]  //“{‚è
-    [SerializeField] int playerEmotionAnger;
+    public int playerEmotionAnger;
 
     /// //////////
     /// //////////

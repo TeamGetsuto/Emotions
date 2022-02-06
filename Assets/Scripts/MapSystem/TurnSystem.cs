@@ -13,9 +13,7 @@ public class TurnSystem : MonoBehaviour
 
     const int maxTurn = 6;  //一日の最大ターン数
     const int maxDay = 10;  //最大日数
-    const string ableScene = "SampleScene"; //ターンシステムが動けるシーン
-
-    EventParentClass eventSystem;
+    const string ableScene = "GameScene"; //ターンシステムが動けるシーン
 
     //シングルトン
     public static TurnSystem instance;
@@ -24,7 +22,6 @@ public class TurnSystem : MonoBehaviour
         if(instance == null)
         {
             instance = this;
-            SceneManager.sceneLoaded += ReLoaded;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -45,7 +42,9 @@ public class TurnSystem : MonoBehaviour
     {
         TurnCalc();
 
+#if DEBUG
         DebugFunc();
+#endif
     }
 
     //初期化
@@ -94,31 +93,22 @@ public class TurnSystem : MonoBehaviour
         }
     }
 
-    //再読み込み
-    private void ReLoaded(Scene scene, LoadSceneMode mode)
+    //日にち計算
+    void DayCalc()
     {
-        //読み込まれたのがゲームシーンでなければ処理しない
-        var currentScene = SceneManager.GetActiveScene().name;
-
-        if(currentScene != ableScene)
-        {
-            return;
-        }
-
-        if (dayCounter < maxDay)
+        if (turnNum == maxTurn)
         {
             turnNum = 0;
-            isTimeChange = true;
-            dayCounter += 1;
 
-            Debug.Log(dayCounter + "日目");
-            Debug.Log("Morning");
+            if (dayCounter < maxDay)
+            {
+                dayCounter += 1;
+            }
         }
-        else
-        {
-            Debug.Log("Ending");
-        }
+
+        Debug.Log(dayCounter + "日目");
     }
+   
 
     //デバッグ用
     void DebugFunc()
@@ -135,5 +125,4 @@ public class TurnSystem : MonoBehaviour
             }
         }
     }
-
 }
