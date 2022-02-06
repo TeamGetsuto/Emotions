@@ -21,7 +21,7 @@ public class Player_Movement : MonoBehaviour
     void Start()
     {
         playerRig = GetComponent<Rigidbody>();
-        playerAud = Camera.main.GetComponent<AudioSource>();
+        playerAud = GetComponent<AudioSource>();
     }
 
     void FixedUpdate()
