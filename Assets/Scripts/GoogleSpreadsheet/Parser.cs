@@ -12,16 +12,24 @@ public class Parser: MonoBehaviour
         if (current != null && current != this)
             Destroy(this);
         else current = this;
+        
     }
     #endregion
+    #region EventSystem
+    private void Start()
+    {
+        EmotionEventHandler.current.onLoadEnding += EventListInitialize;
+    }
+    #endregion
+
+
 
     //イベントの　id と　結果
     public static bool[][] eventListManager;
     public static bool[] eventIsOn;
     public static string[] id;
 
-    public static bool isLoad = false;
-    public bool loadIsOver = false;
+    private bool loadIsOver = false;
 
 
     public struct EventInformation
@@ -40,7 +48,6 @@ public class Parser: MonoBehaviour
 
     public GameObject[] events;
 
-
     void EventListInitialize()
     {
         eventIsOn = new bool[eventInformation.Length];  
@@ -52,27 +59,18 @@ public class Parser: MonoBehaviour
             eventListManager[i] = new bool[3] { false, false, false };
             eventIsOn[i] = false;
         }
+        DataParsing();
+        loadIsOver = true;
     }
 
-    public bool check = false;
-
-    private float timer = 6.0f;
-
+    private float timer = 0.0f;
 
     private void Update()
     {
-        //TODO ターンが進んだら 条件を追加
-        if (isLoad)
-        {
-            Debug.Log("イベントをロードします");
-            EventListInitialize();
-            DataParsing();
-            isLoad = false;
-            Debug.Log("イベントをロードしきれました");
-            loadIsOver = true;
-        }
-        
-        if(TurnSystem.isTimeChange&&loadIsOver)
+        if (!loadIsOver)
+            return;
+
+        if(TurnSystem.isTimeChange)
         {
             //昼・夜の前に6秒を待ってイベント発生します
             timer -= Time.deltaTime;
@@ -98,7 +96,7 @@ public class Parser: MonoBehaviour
                 eventIsOn[turnOnEvents[i]] = true;
             }
 
-            MapSystem.spawnEvents = true;
+            EmotionEventHandler.current.OnChosedEventsTrigger();
             TurnSystem.isTimeChange = false;
         }
     }
