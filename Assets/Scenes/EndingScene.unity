@@ -630,7 +630,7 @@ MonoBehaviour:
   isFadeIn: 0
   resulutText: {fileID: 547224000}
   resultPanel: {fileID: 138031597}
-  emotionNum: 0
+  emotionNum: 1
   fin: {fileID: 1340891601}
 --- !u!1 &1340891601
 GameObject:

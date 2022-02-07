@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EndingScript : MonoBehaviour
 {
@@ -90,6 +91,10 @@ public class EndingScript : MonoBehaviour
         {
             isFadeIn = true;
             isSecondFadeIn = false;
+        }
+        else
+        {
+            SceneManager.LoadScene("TitleScene");
         }
         resultPanel.SetActive(false);
         fin.transform.position = new Vector3(6.5f, -3.4f, 0);
