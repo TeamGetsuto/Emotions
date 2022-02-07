@@ -36,12 +36,14 @@ public class LostGirl : EventParentClass
     {
         Debug.Log("äÏÇ—Çî≠ê∂ÇµÇ‹ÇµÇΩ");
         spriteRenderer.sprite = spriteHappy;
+        EmotionSystem.current.PlayerEventEmotionChange(-10, 10, 0);
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
         Debug.Log("îﬂÇµÇ›Çî≠ê∂ÇµÇ‹ÇµÇΩ");
+        
         animatiionEnded = true;
     }
 
@@ -49,6 +51,7 @@ public class LostGirl : EventParentClass
     {
         Debug.Log("ì{ÇËÇî≠ê∂ÇµÇ‹ÇµÇΩ");
         spriteRenderer.sprite = spriteAnger;
+        EmotionSystem.current.PlayerEventEmotionChange(10, -10, 0);
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 

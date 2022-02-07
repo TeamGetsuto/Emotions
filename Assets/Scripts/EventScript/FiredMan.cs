@@ -35,12 +35,14 @@ public class FiredMan: EventParentClass
     {
         Debug.Log("äÏÇ—Çî≠ê∂ÇµÇ‹ÇµÇΩ");
         spriteRenderer.sprite = spriteHappy;
+        EmotionSystem.current.PlayerEventEmotionChange(-15, 20, 5);
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
         Debug.Log("îﬂÇµÇ›Çî≠ê∂ÇµÇ‹ÇµÇΩ");
+        EmotionSystem.current.PlayerEventEmotionChange(15, 20, -40);
         animatiionEnded = true;
     }
 
@@ -48,6 +50,7 @@ public class FiredMan: EventParentClass
     {
         Debug.Log("ì{ÇËÇî≠ê∂ÇµÇ‹ÇµÇΩ");
         spriteRenderer.sprite = spriteAnger;
+        EmotionSystem.current.PlayerEventEmotionChange(15, 10, 20);
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 

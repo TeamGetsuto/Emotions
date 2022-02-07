@@ -7,10 +7,11 @@ public class TrashGrandpa : EventParentClass
     //eventHasEnded Çtrue Ç…ê›íËÇ∑ÇÈ
 
     SpriteRenderer spriteRenderer;
-    public Sprite girlSprite;
+    [SerializeField] Sprite spriteHappy;
+    [SerializeField] Sprite spriteAnger;
     private void Awake()
     {
-        spriteRenderer = transform.Find("mob_grand").GetComponent<SpriteRenderer>();
+        spriteRenderer = transform.Find("Effect").GetComponent<SpriteRenderer>();
     }
 
 
@@ -26,22 +27,22 @@ public class TrashGrandpa : EventParentClass
     protected override void EventHappiness()
     {
         Debug.Log("1");
-        spriteRenderer.sprite = girlSprite;
 
+        EmotionSystem.current.PlayerEventEmotionChange(15, -10, -10);
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
         Debug.Log("2");
-
+        EmotionSystem.current.PlayerEventEmotionChange(0, 15, 0);
         animatiionEnded = true;
     }
 
     protected override void EventAnger()
     {
         Debug.Log("3");
-
+        EmotionSystem.current.PlayerEventEmotionChange(-10, -10, 20);
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 
