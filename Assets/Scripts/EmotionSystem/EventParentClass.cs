@@ -20,6 +20,7 @@ public class EventParentClass : MonoBehaviour
     protected int input = -1;
     protected bool eventEnded = false;
     private bool isInside = false;
+    private bool isDestroing = false;
     /// /// /// /// /// /// /// 
     protected bool animatiionEnded = false;
     //ì`Ç¶ÇÁÇÍÇÈä¥èÓ
@@ -56,7 +57,9 @@ public class EventParentClass : MonoBehaviour
             Debug.Log("Inside");
             //âº
             /// //////////
-            EmotionEventHandler.current.OnShowButtonsTrigger(canUseHappiness, canUseSadness, canUseAnger);
+            if(!isDestroing)
+                EmotionEventHandler.current.OnShowButtonsTrigger(canUseHappiness, canUseSadness, canUseAnger);
+            else EmotionEventHandler.current.OnCloseButtons();
 
             input = EmotionEventHandler.current.OnButtonPush();
 
@@ -175,14 +178,20 @@ public class EventParentClass : MonoBehaviour
     /// /// /// /// /// /// /// 
     void DestroyHelper()
     {
+        EmotionEventHandler.current.onEventEnter -= EventStart;
+        EmotionEventHandler.current.onEventExit -= EventExit;
+        EmotionEventHandler.current.onEventUnlock -= EventEnding;
         StartCoroutine("DestroyObject");
     }
 
 
     IEnumerator DestroyObject()
     {
-        yield return new WaitForSeconds(destroyTime);
+        isDestroing = true;
         EmotionEventHandler.current.OnCloseButtons();
+
+        EmotionEventHandler.current.onEventEnter -= EventStart;
+        yield return new WaitForSeconds(destroyTime);
         EmotionEventHandler.current.onTurnChange -= DestroyHelper;
         Destroy(gameObject);
     }

@@ -35,6 +35,11 @@ public class EmotionSystem : MonoBehaviour
     [Range(0,100)]  //怒り
     public int playerEmotionAnger;
 
+    [Header("City starting values")]
+    public int cityEmotionHappiness;//喜び
+    public int cityEmotionSadness;//悲しみ
+    public int cityEmotionAnger;//怒り
+
     /// //////////
     /// //////////
 
@@ -49,13 +54,21 @@ public class EmotionSystem : MonoBehaviour
 
 
     //感情の値を変える関数
-    public void PlayerEventEmotionChange(int eHap, int eSad, int eAng, Action resultAction = null)
+    public void PlayerEventEmotionChange(int eHap, int eSad, int eAng)
+    {
+        CityEventEmotionChange(eHap, eSad, eAng);
+        //このシステムにある値を変えます
+        playerEmotionHappiness += eHap;
+        playerEmotionSadness += eSad;
+        playerEmotionAnger += eAng;
+    }
+
+    public void CityEventEmotionChange(int eHap, int eSad, int eAng)
     {
         //このシステムにある値を変えます
-        current.playerEmotionHappiness += eHap;
-        current.playerEmotionSadness += eSad;
-        current.playerEmotionAnger += eAng;
-        resultAction();
+        cityEmotionHappiness -= eHap;
+        cityEmotionSadness -= eSad;
+        cityEmotionAnger -= eAng;
     }
 
     /// //////////

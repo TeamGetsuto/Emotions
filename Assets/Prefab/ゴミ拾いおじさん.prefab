@@ -54,7 +54,8 @@ MonoBehaviour:
   canUseHappiness: 1
   canUseSadness: 1
   canUseAnger: 1
-  girlSprite: {fileID: 21300000, guid: d796406f71ac9c74e87644579164776f, type: 3}
+  spriteHappy: {fileID: 21300000, guid: 478a50a4dd68ba0459744408c139e3fd, type: 3}
+  spriteAnger: {fileID: 21300000, guid: f6464bf3ca097fc4f85a5022b1cd9b1c, type: 3}
 --- !u!1 &3022437755544110549
 GameObject:
   m_ObjectHideFlags: 0
@@ -66,7 +67,7 @@ GameObject:
   - component: {fileID: 3981386219902367847}
   - component: {fileID: 1253563385562166165}
   m_Layer: 0
-  m_Name: Sad
+  m_Name: Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
