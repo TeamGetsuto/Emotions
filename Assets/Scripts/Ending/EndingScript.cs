@@ -9,6 +9,14 @@ public class EndingScript : MonoBehaviour
     [SerializeField] float fadeSpeed;　//フェードのスピード
     [SerializeField] bool isFadeIn;    //フェードイン
     bool isFadeOut;                    //フェードアウト
+    bool isSecondFadeIn;               //2回目のフェードイン
+
+    [Header("Result Pruperty")]
+    [SerializeField] private Text resulutText;       //表示されるテキスト
+    [SerializeField] private GameObject resultPanel; //リザルト用のパネル
+    [SerializeField] int emotionNum;                 //感情の値
+
+    [SerializeField] GameObject fin;
 
     Image fadeImage;
     float red, green, blue, alfa;
@@ -17,13 +25,15 @@ public class EndingScript : MonoBehaviour
     void Start()
     {
         Fade_Initialize();
+        ResultEmotion(emotionNum);
+        StartCoroutine("StartEnding");
     }
 
     // Update is called once per frame
     void Update()
     {
         //フェードイン
-        if(isFadeIn)
+        if (isFadeIn)
         {
             StartFadeIn();
         }
@@ -41,6 +51,7 @@ public class EndingScript : MonoBehaviour
         green = fadeImage.color.g;         //緑
         blue = fadeImage.color.b;          //青
         alfa = fadeImage.color.a;          //透明
+        isSecondFadeIn = true;
     }
     //フェードイン
     void StartFadeIn()
@@ -50,7 +61,7 @@ public class EndingScript : MonoBehaviour
         if (alfa <= 0)
         {                          //完全に透明になったら5秒後にフェードアウトに移行
             isFadeIn = false;
-            Invoke("FadeOut", 5);
+            StartCoroutine("FadeWait");
         }
     }
     //フェードアウト
@@ -63,10 +74,41 @@ public class EndingScript : MonoBehaviour
             isFadeOut = false;
         }
     }
-
-    void FadeOut()
+    IEnumerator StartEnding() //エンディングシーンの開始
     {
+        yield return new WaitForSeconds(2);
+        isFadeIn = true;
+    }
+    IEnumerator FadeWait()
+    {
+        yield return new WaitForSeconds(3);
+
         isFadeOut = true;
+
+        yield return new WaitForSeconds(3);
+        if(isSecondFadeIn)
+        {
+            isFadeIn = true;
+            isSecondFadeIn = false;
+        }
+        resultPanel.SetActive(false);
+        fin.transform.position = new Vector3(6.5f, -3.4f, 0);
+    }
+
+    void ResultEmotion(int emotionNum) //引数によって表示するテキスト変える
+    {
+        if (emotionNum == 0)
+        {
+            resulutText.text = "みんなが喜びの感情になった！！";
+        }
+        else if (emotionNum == 1)
+        {
+            resulutText.text = "みんなが悲しみの感情になった…";
+        }
+        else if (emotionNum == 2)
+        {
+            resulutText.text = "みんなが怒りの感情になった…";
+        }
     }
     void SetAlpha()
     {
