@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EventParentClass : MonoBehaviour
 {
@@ -38,8 +39,6 @@ public class EventParentClass : MonoBehaviour
         EmotionEventHandler.current.onEventExit += EventExit;
         EmotionEventHandler.current.onEventUnlock += EventEnding;
         EmotionEventHandler.current.onTurnChange += DestroyHelper;
-
-
     }
     /// /// /// /// /// /// /// 
     
@@ -184,7 +183,6 @@ public class EventParentClass : MonoBehaviour
         StartCoroutine("DestroyObject");
     }
 
-
     IEnumerator DestroyObject()
     {
         isDestroing = true;
@@ -193,7 +191,8 @@ public class EventParentClass : MonoBehaviour
         EmotionEventHandler.current.onEventEnter -= EventStart;
         yield return new WaitForSeconds(destroyTime);
         EmotionEventHandler.current.onTurnChange -= DestroyHelper;
-        Destroy(gameObject);
+        if(gameObject!=null)
+            Destroy(gameObject);
     }
     /// /// /// /// /// /// /// 
 
