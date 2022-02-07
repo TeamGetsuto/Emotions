@@ -27,14 +27,13 @@ public class TrashGrandpa : EventParentClass
     {
         Debug.Log("1");
         spriteRenderer.sprite = girlSprite;
-
+        EmotionSystem.current.PlayerEventEmotionChange(10, -5, 0);
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
         Debug.Log("2");
- 
         animatiionEnded = true;
     }
 

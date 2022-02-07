@@ -35,6 +35,7 @@ public class FightGirl: EventParentClass
     {
         Debug.Log("äÏÇ—Çî≠ê∂ÇµÇ‹ÇµÇΩ");
         spriteRenderer.sprite = spriteHappy;
+        EmotionSystem.current.PlayerEventEmotionChange(10, -5, 0);
         animatiionEnded = true;
     }
 
@@ -49,6 +50,7 @@ public class FightGirl: EventParentClass
     {
         Debug.Log("ì{ÇËÇî≠ê∂ÇµÇ‹ÇµÇΩ");
         spriteRenderer.sprite = spriteAnger;
+        EmotionSystem.current.PlayerEventEmotionChange(-5, 0, 10);
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 
