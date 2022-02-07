@@ -56,7 +56,7 @@ public class EndingScript : MonoBehaviour
     //フェードイン
     void StartFadeIn()
     {
-        alfa -= fadeSpeed;         //不透明度を徐々に下げる
+        alfa -= fadeSpeed * Time.deltaTime;         //不透明度を徐々に下げる
         SetAlpha();                //変更した透明度をパネルに反映する
         if (alfa <= 0)
         {                          //完全に透明になったら5秒後にフェードアウトに移行
@@ -67,7 +67,7 @@ public class EndingScript : MonoBehaviour
     //フェードアウト
     void StartFadeOut()
     {
-        alfa += fadeSpeed;         //不透明度を徐々に上げる
+        alfa += fadeSpeed * Time.deltaTime;         //不透明度を徐々に上げる
         SetAlpha();                //変更した透明度をパネルに反映する
         if (alfa >= 1)
         {                          //完全に不透明になったら処理を抜ける
