@@ -551,7 +551,7 @@ GameObject:
   - component: {fileID: 1132479981}
   - component: {fileID: 1132479983}
   m_Layer: 5
-  m_Name: FinPanel
+  m_Name: FadePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -626,7 +626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0b0f3d0c6e69e4c8d73cd73b7ae220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeSpeed: 0.002
+  fadeSpeed: 1
   isFadeIn: 0
   resulutText: {fileID: 547224000}
   resultPanel: {fileID: 138031597}
