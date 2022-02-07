@@ -17,6 +17,8 @@ public class EndingScript : MonoBehaviour
     [SerializeField] private GameObject resultPanel; //リザルト用のパネル
     [SerializeField] int emotionNum;                 //感情の値
 
+    private EmotionSystem staticObject;
+
     [SerializeField] GameObject fin;
 
     Image fadeImage;
@@ -26,6 +28,17 @@ public class EndingScript : MonoBehaviour
     void Start()
     {
         Fade_Initialize();
+
+        staticObject = GameObject.Find("TurnSystem").GetComponent<EmotionSystem>();
+
+        if (staticObject.cityEmotionAnger > staticObject.cityEmotionHappiness && staticObject.cityEmotionAnger > staticObject.cityEmotionSadness)
+            emotionNum = 2;
+        else
+        if (staticObject.cityEmotionAnger < staticObject.cityEmotionHappiness && staticObject.cityEmotionHappiness > staticObject.cityEmotionSadness)
+            emotionNum = 0;
+        else
+            emotionNum = 1;
+
         ResultEmotion(emotionNum);
         StartCoroutine("StartEnding");
     }

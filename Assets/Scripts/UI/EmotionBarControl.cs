@@ -14,7 +14,7 @@ public class EmotionBarControl : MonoBehaviour
     Slider angerBar;
 
     //プレイヤー
-    [SerializeField] GameObject player;
+    [SerializeField] GameObject gameObject;
 
     //感情システム
     EmotionSystem emotionSystem;
@@ -26,7 +26,7 @@ public class EmotionBarControl : MonoBehaviour
         sadnessBar = sadness.GetComponent<Slider>();
         angerBar = anger.GetComponent<Slider>();
 
-        emotionSystem = player.GetComponent<EmotionSystem>();
+        emotionSystem = gameObject.GetComponent<EmotionSystem>();
     }
 
     // Update is called once per frame
