@@ -124,7 +124,7 @@ public class EmoteButtonControl : MonoBehaviour
     public void HappinessButton()
     {
         //Œã‚©‚ç’Ç‰Á
-        audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.emoteSeVolume);
+        audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.seVolume1);
         isButtonPushed = true;
         Debug.Log("Happiness");
     }
@@ -132,7 +132,7 @@ public class EmoteButtonControl : MonoBehaviour
     public void SadnessButton()
     {
         //Œã‚©‚ç’Ç‰Á
-        audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.emoteSeVolume);
+        audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.seVolume1);
         isButtonPushed = true;
         Debug.Log("Sadness");
     }
@@ -140,7 +140,7 @@ public class EmoteButtonControl : MonoBehaviour
     public void AngerButton()
     {
         //Œã‚©‚ç’Ç‰Á
-        audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.emoteSeVolume);
+        audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.seVolume1);
         isButtonPushed = true;
         Debug.Log("Anger");
     }

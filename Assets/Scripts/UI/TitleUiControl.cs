@@ -37,10 +37,11 @@ public class TitleUiControl : MonoBehaviour
     [SerializeField] float fadeSpeed;
 
     private float r1, g1, b1, a1;
-    private float r2, g2, b2, a2;
 
     public bool isFadeIn = false;
     public bool isFadeOut = false;
+    bool fadeInFinished = false;
+    bool fadeOutFinished = false;
 
     SE_Initializer soundPlayer;
 
@@ -55,27 +56,30 @@ public class TitleUiControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        FadeIn();
-
-        if(!isFadeIn)
+        if (isFadeIn)
         {
-            return;
+            FadeIn();
         }
 
-        TitleLogoMove();
-
-        if(!logoMoveComp)
+        if(isFadeOut)
         {
-            return;
+            FadeOut();
         }
 
-        StartLogoMove();
-
-        if(!isStartMoved)
+        if (fadeInFinished)
         {
-            return;
+            TitleLogoMove();
         }
 
+        if(logoMoveComp)
+        {
+            StartLogoMove();
+        }
+
+        if(fadeOutFinished)
+        {
+            sceneChanger.ChangeScene(1);
+        }
         
     }
 
@@ -101,15 +105,15 @@ public class TitleUiControl : MonoBehaviour
         //フェード関連の初期化
         fadePanel.SetActive(true);
 
+        isFadeIn = true;
+        isFadeOut = false;
+        fadeInFinished = false;
+        fadeOutFinished = false;
+
         r1 = fadeImage.color.r;
 		g1 = fadeImage.color.g;
 		b1 = fadeImage.color.b;
 		a1 = fadeImage.color.a;
-
-        r2 = startImage.color.r;
-        g2 = startImage.color.g;
-        b2 = startImage.color.b;
-        a2 = startImage.color.a;
     }
 
     void SetAlpha(float red, float green, float blue, float alfa)
@@ -119,24 +123,29 @@ public class TitleUiControl : MonoBehaviour
 
     void FadeIn()
     {
+        fadeImage.enabled = true;
         a1 -= fadeSpeed * Time.deltaTime; //不透明度を徐々に下げる
         SetAlpha(r1, g1, b1, a1);                         //変更した不透明度をパネルに反映する
         if (a1 <= 0)
-        {                                   
-            fadePanel.SetActive(false);     //パネルの表示をオフにする
-            isFadeIn = true;                //完全に透明になったら処理を抜ける
+        {
+            fadeImage.enabled = false;     //パネルの表示をオフにする
+            isFadeIn = false;                //完全に透明になったら処理を抜ける
+            fadeInFinished = true;
         }
     }
 
     void FadeOut()
     {
-        fadePanel.SetActive(true);           //パネルの表示をオンにする
+        fadeImage.enabled = true;          //パネルの表示をオンにする
         a1 += fadeSpeed * Time.deltaTime;    //不透明度を徐々にあげる
         SetAlpha(r1, g1, b1, a1);                          //変更した透明度をパネルに反映する
         if (a1 >= 1)
         {                                    //完全に不透明になったら処理を抜ける
             isFadeOut = false;
+            fadeOutFinished = true;
         }
+
+        Debug.Log(a1 + "," + fadeSpeed + "," + Time.deltaTime);
     }
 
    void StartLogoMove()
@@ -172,7 +181,7 @@ public class TitleUiControl : MonoBehaviour
 
     public void StartButtonDown()
     {
-        soundPlayer.AudioPlay(soundPlayer.emoteEffect, soundPlayer.emoteSeVolume);
-        sceneChanger.ChangeScene(1);
+        isFadeOut = true;
+        soundPlayer.AudioPlay(soundPlayer.emoteEffect, soundPlayer.seVolume1);
     }
 }

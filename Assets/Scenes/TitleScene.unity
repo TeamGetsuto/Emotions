@@ -319,7 +319,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seAudioSrc: {fileID: 136467325}
   emoteEffect: {fileID: 8300000, guid: 7dccbb4c9ea99654bbbccf4aa1d6c46c, type: 3}
-  emoteSeVolume: 0.5
+  buttonPushed: {fileID: 0}
+  seVolume1: 0.5
 --- !u!82 &136467325
 AudioSource:
   m_ObjectHideFlags: 0
@@ -816,7 +817,7 @@ MonoBehaviour:
   titlelogo: {fileID: 2126365150}
   startlogo: {fileID: 374935212}
   logoSpeed: 180
-  logoEndPos: {x: 0, y: -500, z: 0}
+  logoEndPos: {x: 0, y: -430, z: 0}
   logoMoveComp: 0
   startSpeed: 160
   startLogoEndPos: {x: 0, y: 250, z: 0}
@@ -941,6 +942,49 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1959296763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1959296765}
+  - component: {fileID: 1959296764}
+  m_Layer: 0
+  m_Name: QuitManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1959296764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959296763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4c06ba0b262e54182e33f05806a963, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1959296765
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959296763}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1967277730
 GameObject:
   m_ObjectHideFlags: 0
