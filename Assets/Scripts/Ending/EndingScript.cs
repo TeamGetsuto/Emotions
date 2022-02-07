@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class EndingScript : MonoBehaviour
 {
@@ -107,7 +106,7 @@ public class EndingScript : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("TitleScene");
+            Application.Quit();
         }
         resultPanel.SetActive(false);
         fin.transform.position = new Vector3(6.5f, -3.4f, 0);
@@ -117,7 +116,7 @@ public class EndingScript : MonoBehaviour
     {
         if (emotionNum == 0)
         {
-            resulutText.text = "みんなが喜びの感情になった！！";
+            resulutText.text = " みんなが喜びの感情になった！";
         }
         else if (emotionNum == 1)
         {
@@ -125,7 +124,7 @@ public class EndingScript : MonoBehaviour
         }
         else if (emotionNum == 2)
         {
-            resulutText.text = "みんなが怒りの感情になった…";
+            resulutText.text = " みんなが怒りの感情になった…";
         }
     }
     void SetAlpha()

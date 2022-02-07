@@ -109,6 +109,7 @@ public class TurnSystem : MonoBehaviour
     IEnumerator DayChange()
     {
         yield return new WaitForSeconds(6.0f);
+        turnNum = 0;
         SceneManager.LoadScene(2);
     }
 
