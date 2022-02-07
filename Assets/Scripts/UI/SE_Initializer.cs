@@ -11,10 +11,11 @@ public class SE_Initializer : MonoBehaviour
     //AudioClips(SE‚ğ’Ç‰Á‚·‚éê‡‚Í‚±‚±‚É•Ï”‚ğ’Ç‰Á)
     [Header("Audio_Clips")]
     public AudioClip emoteEffect;
+    public AudioClip buttonPushed;
 
     //SE‚Ì‰¹—Ê‚ğŒÂ•Ê‚Å•Ï‚¦‚½‚¢ê‡•Ï”‚ğ’Ç‰Á
     [Header("Audio_Volume")]
-    public float emoteSeVolume;
+    public float seVolume1;
 
     // Start is called before the first frame update
     void Start()

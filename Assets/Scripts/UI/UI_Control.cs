@@ -22,11 +22,13 @@ public class UI_Control : MonoBehaviour
     [SerializeField] Text turnText;
     [SerializeField] Text dayText;
 
+    SE_Initializer seControl;
     SceneChanger sceneChanger;
 
     // Start is called before the first frame update
     void Start()
     {
+        seControl = Camera.main.GetComponent<SE_Initializer>();
         sceneChanger = GetComponent<SceneChanger>();
 
         if (menuButtonObj == null)
@@ -68,6 +70,7 @@ public class UI_Control : MonoBehaviour
     //メニューボタンの処理
     public void MenuButtonDown()
     {
+        seControl.AudioPlay(seControl.buttonPushed, seControl.seVolume1);
         Time.timeScale = 0;
         turnText.text = "Action " + (TurnSystem.turnNum + 1) + " / 6";
         dayText.text = "Day " + TurnSystem.dayCounter;
@@ -77,6 +80,7 @@ public class UI_Control : MonoBehaviour
     //戻るボタンの処理
     public void ReturnButtonDown()
     {
+        seControl.AudioPlay(seControl.buttonPushed, seControl.seVolume1);
         Time.timeScale = 1;
         menuCanvas.SetActive(false);
     }
@@ -84,6 +88,8 @@ public class UI_Control : MonoBehaviour
     //タイトルボタンの処理
     public void TitleButtonDown()
     {
+        seControl.AudioPlay(seControl.buttonPushed, seControl.seVolume1);
+        Time.timeScale = 1;
         sceneChanger.ChangeScene(0);
     }
 }
