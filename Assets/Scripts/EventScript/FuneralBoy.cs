@@ -23,21 +23,22 @@ public class FuneralBoy : EventParentClass
 
     protected override void EventHappiness()
     {
-        Debug.Log("äÏÇ—Çî≠ê∂ÇµÇ‹ÇµÇΩ");   
-        
+        Debug.Log("äÏÇ—Çî≠ê∂ÇµÇ‹ÇµÇΩ");
+        EmotionSystem.current.PlayerEventEmotionChange(10, -10, -5);
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
         Debug.Log("îﬂÇµÇ›Çî≠ê∂ÇµÇ‹ÇµÇΩ");
-
+        EmotionSystem.current.PlayerEventEmotionChange(-5, 10, 5);
         animatiionEnded = true;
     }
 
     protected override void EventAnger()
     {
         Debug.Log("ì{ÇËÇî≠ê∂ÇµÇ‹ÇµÇΩ");
+        EmotionSystem.current.PlayerEventEmotionChange(-5, -5, 10);
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 
