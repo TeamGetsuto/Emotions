@@ -41,6 +41,8 @@ public class EmotionEventHandler : MonoBehaviour
 
     public event Action onChosedEvents;
 
+    public event Action onLevelLoad;
+
     public event Action<bool, bool, bool> onShowButtons;
     public event Action onCloseButtons;
 
@@ -64,13 +66,6 @@ public class EmotionEventHandler : MonoBehaviour
             onEventUnlock(id, input);
     }
 
-    public int OnUiButtonTrigger(string id)
-    {
-        if (onUiButton != null)
-            return onUiButton(id);
-        return -1;
-    }
-
     public void OnTurnChangeTrigger()
     {
         if (onTurnChange != null)
@@ -85,6 +80,14 @@ public class EmotionEventHandler : MonoBehaviour
         if (onLoadEnding != null)
         {
             onLoadEnding();
+        }
+    }
+
+    public void OnLevelLoadTrigger()
+    {
+        if(onLevelLoad!=null)
+        {
+            onLevelLoad();
         }
     }
 

@@ -28,11 +28,9 @@ public class TurnSystem : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
+        EmotionEventHandler.current.onLevelLoad += TurnInitialize;
     }
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         TurnInitialize();
     }
