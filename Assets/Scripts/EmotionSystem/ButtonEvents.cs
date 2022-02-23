@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class EmotionEventHandler : MonoBehaviour
+public class ButtonEvents : MonoBehaviour
 {
     /// //////////
     //シングルトン
 
     #region Singleton
-    public static EmotionEventHandler current;
+    public static ButtonEvents current;
     private void Awake()
     {
         if (current != null && current != this)
@@ -26,17 +26,9 @@ public class EmotionEventHandler : MonoBehaviour
     /// //////////
     /// イベントに入る
     /// イベント結果
-    public event Action<string, int> onEventUnlock;
-
-    public event Func<string,int> onUiButton;
-
-    public event Action onNewTimeStart;
-
     public event Action<bool, bool, bool> onShowButtons;
     public event Action onCloseButtons;
-
     public event Func<int> onButtonPush;
-
     //イベントに近づ
 
 

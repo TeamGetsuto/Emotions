@@ -58,15 +58,15 @@ public class EventParentClass : MonoBehaviour
             //‰¼
             /// //////////
             if(!isDestroing)
-                EmotionEventHandler.current.OnShowButtonsTrigger(canUseHappiness, canUseSadness, canUseAnger);
-            else EmotionEventHandler.current.OnCloseButtons();
+                ButtonEvents.current.OnShowButtonsTrigger(canUseHappiness, canUseSadness, canUseAnger);
+            else ButtonEvents.current.OnCloseButtons();
 
-            input = EmotionEventHandler.current.OnButtonPush();
+            input = ButtonEvents.current.OnButtonPush();
 
             /// //////////
             if (input != -1)
             {
-                EmotionEventHandler.current.OnCloseButtons();
+                ButtonEvents.current.OnCloseButtons();
                 EventSystem.TriggerEvent("StartEvent", new Dictionary<string, object> { {"id", id},{"input", input} });
             }
                 isInside = true;
@@ -88,7 +88,7 @@ public class EventParentClass : MonoBehaviour
         if (id == this.id)
         {
             Debug.Log("Out");
-            EmotionEventHandler.current.OnCloseButtons();
+            ButtonEvents.current.OnCloseButtons();
             //UI‚ð•Â‚¶‚é
         }
     }
@@ -191,7 +191,7 @@ public class EventParentClass : MonoBehaviour
     IEnumerator DestroyObject()
     {
         isDestroing = true;
-        EmotionEventHandler.current.OnCloseButtons();
+        ButtonEvents.current.OnCloseButtons();
 
         yield return new WaitForSeconds(destroyTime);
         if(gameObject!=null)
