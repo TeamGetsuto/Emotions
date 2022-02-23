@@ -28,12 +28,14 @@ public class EventSystem : MonoBehaviour
 
     void Initialize()
     {
-        if (eventDictionary == null)
-            eventDictionary = new Dictionary<string, Action<Dictionary<string, object>>>();
+        Debug.LogWarning("Initialize");
+        if (eventSystem.eventDictionary == null)
+            eventSystem.eventDictionary = new Dictionary<string, Action<Dictionary<string, object>>>();
     }
 
     public static void StartListening(string eventName, Action<Dictionary<string, object>> listener)
     {
+        Debug.LogWarning("Started Listening");
         Action<Dictionary<string, object>> thisEvent;
 
         if(eventSystem.eventDictionary.TryGetValue(eventName, out thisEvent))

@@ -25,79 +25,22 @@ public class EmotionEventHandler : MonoBehaviour
     //エベントシステムを作ります
     /// //////////
     /// イベントに入る
-    public event Action<string, int> onEventEnter;
-    /// イベントを出る
-    public event Action<string> onEventExit;
     /// イベント結果
     public event Action<string, int> onEventUnlock;
 
     public event Func<string,int> onUiButton;
 
-    public event Action onTurnChange;
-
-    public event Action onLoadEnding;
-
     public event Action onNewTimeStart;
-
-    public event Action onChosedEvents;
-
-    public event Action onLevelLoad;
 
     public event Action<bool, bool, bool> onShowButtons;
     public event Action onCloseButtons;
 
     public event Func<int> onButtonPush;
 
-    //イベントに近づく
-    public void EventTrigger(string id, int input)
-    {
-        if (onEventEnter != null)
-            onEventEnter(id, input);
-    }
-    //イベントから離れる
-    public void EventExitTrigger(string id)
-    {
-        if (onEventExit != null)
-            onEventExit(id);
-    }
-    public void EventUnlockTrigger(string id, int input)
-    {
-        if (onEventUnlock != null)
-            onEventUnlock(id, input);
-    }
+    //イベントに近づ
 
-    public void OnTurnChangeTrigger()
-    {
-        if (onTurnChange != null)
-        {
-            onTurnChange();
-        }
 
-    }
 
-    public void OnLoadEndingTrigger()
-    {
-        if (onLoadEnding != null)
-        {
-            onLoadEnding();
-        }
-    }
-
-    public void OnLevelLoadTrigger()
-    {
-        if(onLevelLoad!=null)
-        {
-            onLevelLoad();
-        }
-    }
-
-    public void OnChosedEventsTrigger()
-    {
-        if (onChosedEvents != null)
-        {
-            onChosedEvents();
-        }
-    }
 
     public void OnShowButtonsTrigger(bool h, bool s, bool a)
     {

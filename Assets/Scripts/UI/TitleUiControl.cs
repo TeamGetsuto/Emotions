@@ -78,9 +78,9 @@ public class TitleUiControl : MonoBehaviour
 
         if(fadeOutFinished)
         {
-            
-            if(GameObject.Find("TurnSystem") != null)
-                EmotionEventHandler.current.OnLevelLoadTrigger();
+
+            if (GameObject.Find("TurnSystem") != null)
+                EventSystem.TriggerEvent("LoadedLevel", null);
             sceneChanger.ChangeScene(1);
         }
         

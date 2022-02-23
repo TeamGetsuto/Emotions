@@ -29,7 +29,7 @@ public class InformationDownloading
         }
 
         onCompleted(downloadData);
-        EmotionEventHandler.current.OnLoadEndingTrigger();
+        EventSystem.TriggerEvent("LoadHasEnded", null);
         }
 
 }
