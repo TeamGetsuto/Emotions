@@ -35,10 +35,9 @@ public class EmoteButtonControl : MonoBehaviour
 
     private void Awake()
     {
-        EmotionEventHandler.current.onShowButtons += ButtonShow;
-        EmotionEventHandler.current.onCloseButtons += ButtonClose;
-
-        EmotionEventHandler.current.onButtonPush += InputEmot;
+        ButtonEvents.current.onShowButtons += ButtonShow;
+        ButtonEvents.current.onCloseButtons += ButtonClose;
+        ButtonEvents.current.onButtonPush += InputEmot;
     }
 
     // Start is called before the first frame update

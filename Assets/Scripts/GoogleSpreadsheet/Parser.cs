@@ -15,10 +15,11 @@ public class Parser: MonoBehaviour
         
     }
     #endregion
+
     #region EventSystem
-    private void Start()
+    private void OnEnable()
     {
-        EmotionEventHandler.current.onLoadEnding += EventListInitialize;
+        EventSystem.StartListening("LoadHasEnded", EventListInitialize);
     }
     #endregion
 
@@ -48,7 +49,7 @@ public class Parser: MonoBehaviour
 
     public GameObject[] events;
 
-    void EventListInitialize()
+    void EventListInitialize(Dictionary<string, object> message)
     {
         eventIsOn = new bool[eventInformation.Length];  
         eventListManager = new bool[eventInformation.Length][];
@@ -70,7 +71,7 @@ public class Parser: MonoBehaviour
         if (!loadIsOver)
             return;
 
-        if(TurnSystem.isTimeChange)
+        if (TurnSystem.isTimeChange)
         {
             //昼・夜の前に6秒を待ってイベント発生します
             timer -= Time.deltaTime;
@@ -79,7 +80,7 @@ public class Parser: MonoBehaviour
             timer = 6.0f;
 
             Debug.Log("StartedCheckingEvents");
-            
+
             List<int> turnOnEvents = new List<int>();
 
             for (int i = 0; i < eventIsOn.Length; i++)
@@ -90,16 +91,17 @@ public class Parser: MonoBehaviour
             turnOnEvents = ReturnAllGoodEvents();
 
             Debug.Log("!!!!!!!!!" + turnOnEvents.Count);
-            
+
             for (int i = 0; i < turnOnEvents.Count; i++)
             {
                 eventIsOn[turnOnEvents[i]] = true;
             }
 
-            EmotionEventHandler.current.OnChosedEventsTrigger();
+            EventSystem.TriggerEvent("SpawnEvents", null);
             TurnSystem.isTimeChange = false;
         }
     }
+
 
     public List<int> ReturnAllGoodEvents()
     {

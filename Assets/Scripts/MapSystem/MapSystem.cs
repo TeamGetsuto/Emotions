@@ -29,10 +29,14 @@ public class MapSystem : MonoBehaviour
             eventPlaceNum[i] = eventOccurrence[i].GetComponent<EventPositionProperty>().eventNum;
             isUsed[i] = eventOccurrence[i].GetComponent<EventPositionProperty>().isUsed;
         }
-        EmotionEventHandler.current.onChosedEvents += SpawnEvents;
     }
 
-    public void SpawnEvents()
+    private void OnEnable()
+    {
+        EventSystem.StartListening("SpawnEvents", SpawnEvents);
+    }
+
+    public void SpawnEvents(Dictionary<string, object> message)
     {
         spawnEvents = false;
         for (int i = 0; i < Parser.eventIsOn.Length; i++)

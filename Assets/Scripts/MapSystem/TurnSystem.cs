@@ -28,11 +28,16 @@ public class TurnSystem : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        EmotionEventHandler.current.onLevelLoad += TurnInitialize;
     }
+
+    private void OnEnable()
+    {
+        EventSystem.StartListening("LoadedLevel", TurnInitialize);
+    }
+
     private void Start()
     {
-        TurnInitialize();
+        TurnInitialize(null);
     }
 
     // Update is called once per frame
@@ -46,7 +51,7 @@ public class TurnSystem : MonoBehaviour
     }
 
     //èâä˙âª
-    void TurnInitialize()
+    void TurnInitialize(Dictionary<string, object> message)
     {
         turnNum = 0;
         isTimeChange = true;
@@ -79,27 +84,23 @@ public class TurnSystem : MonoBehaviour
         if(turnNum == 2)
         {
             isTimeChange = true;
-            EmotionEventHandler.current.OnTurnChangeTrigger();
+            EventSystem.TriggerEvent("EventDestroying", null);
             Debug.Log("Noon");
         }
 
         if (turnNum == 4)
         {
             isTimeChange = true;
-            EmotionEventHandler.current.OnTurnChangeTrigger();
+            EventSystem.TriggerEvent("EventDestroying", null);
             Debug.Log("Night");
         }
         if(turnNum == 6)
         {
-            isTimeChange = true;
-            EmotionEventHandler.current.OnTurnChangeTrigger();
-            if (isTimeChange)
-            {
-                isTimeChange = false;
-                turnNum = 5;
-                StartCoroutine("DayChange");
-            }
-            
+         
+            turnNum = 5;
+            EventSystem.TriggerEvent("EventDestroying", null);
+            StartCoroutine("DayChange");
+
         }
 
     }

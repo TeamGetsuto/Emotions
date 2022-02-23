@@ -29,17 +29,19 @@ public class EventParentClass : MonoBehaviour
     [SerializeField] bool canUseHappiness   = false;
     [SerializeField] bool canUseSadness     = false;
     [SerializeField] bool canUseAnger       = false;
-    
+
 
     //イベント初期化
-    /// /// /// /// /// /// /// 
-    private void Start()
+
+    private void OnEnable()
     {
-        EmotionEventHandler.current.onEventEnter += EventStart;
-        EmotionEventHandler.current.onEventExit += EventExit;
-        EmotionEventHandler.current.onEventUnlock += EventEnding;
-        EmotionEventHandler.current.onTurnChange += DestroyHelper;
+        EventSystem.StartListening("StartEvent", EventStart);
+        EventSystem.StartListening("ExitEvent", EventExit);
+        EventSystem.StartListening("EventEnded", EventEnding);
+        EventSystem.StartListening("EventDestroying", DestroyHelper);
     }
+
+ 
     /// /// /// /// /// /// /// 
     
     /// /// /// /// /// /// /// 
@@ -48,7 +50,6 @@ public class EventParentClass : MonoBehaviour
 
     /// /// /// /// /// /// /// 
     //イベントを始まる際  
-
     protected void EventPlayerCheck(float radius, Vector3 eventOffset)
     {
         if (Physics.CheckSphere(transform.position + eventOffset, radius, layer) && !eventEnded)
@@ -57,23 +58,23 @@ public class EventParentClass : MonoBehaviour
             //仮
             /// //////////
             if(!isDestroing)
-                EmotionEventHandler.current.OnShowButtonsTrigger(canUseHappiness, canUseSadness, canUseAnger);
-            else EmotionEventHandler.current.OnCloseButtons();
+                ButtonEvents.current.OnShowButtonsTrigger(canUseHappiness, canUseSadness, canUseAnger);
+            else ButtonEvents.current.OnCloseButtons();
 
-            input = EmotionEventHandler.current.OnButtonPush();
+            input = ButtonEvents.current.OnButtonPush();
 
             /// //////////
             if (input != -1)
             {
-                EmotionEventHandler.current.OnCloseButtons();
-                EmotionEventHandler.current.EventTrigger(id, input);
+                ButtonEvents.current.OnCloseButtons();
+                EventSystem.TriggerEvent("StartEvent", new Dictionary<string, object> { {"id", id},{"input", input} });
             }
                 isInside = true;
         }
 
         else if(isInside)
         {
-            EmotionEventHandler.current.EventExitTrigger(id);
+            EventSystem.TriggerEvent("ExitEvent", new Dictionary<string, object> { { "id", id} });
             isInside = false;
         }
     }
@@ -81,12 +82,13 @@ public class EventParentClass : MonoBehaviour
 
     //イベントから離れる際
     /// /// /// /// /// /// /// 
-    protected void EventExit(string id)
+    protected void EventExit(Dictionary<string, object> message)
     {
+        string id = (string)message["id"];
         if (id == this.id)
         {
             Debug.Log("Out");
-            EmotionEventHandler.current.OnCloseButtons();
+            ButtonEvents.current.OnCloseButtons();
             //UIを閉じる
         }
     }
@@ -97,8 +99,11 @@ public class EventParentClass : MonoBehaviour
     /// /// /// /// /// /// /// 
     //イベントの内容
     /// /// /// /// /// /// /// 
-    protected void EventStart(string id, int input)
+    protected void EventStart(Dictionary<string, object> message)
     {
+        int input = (int)message["input"];
+        string id = (string)message["id"];
+
         if (id == this.id)
         {
             switch (input)
@@ -131,14 +136,17 @@ public class EventParentClass : MonoBehaviour
             }
             //イベントの結果
             if(animatiionEnded)
-                EmotionEventHandler.current.EventUnlockTrigger(id, input);
+                EventSystem.TriggerEvent("EventEnded", new Dictionary<string, object> { { "id", id }, {"input", input } });
         }
     }
     /// /// /// /// /// /// /// 
     
     //イベント結果を管理する関数
-    protected void EventEnding(string id, int input)
+    protected void EventEnding(Dictionary<string, object> message)
     {
+        int input = (int)message["input"];
+        string id = (string)message["id"];
+
         if (id == this.id)
         {
             switch (input)
@@ -175,25 +183,29 @@ public class EventParentClass : MonoBehaviour
 
     //イベントを破棄する前の追加時間
     /// /// /// /// /// /// /// 
-    void DestroyHelper()
+    void DestroyHelper(Dictionary<string, object> message)
     {
-        EmotionEventHandler.current.onEventEnter -= EventStart;
-        EmotionEventHandler.current.onEventExit -= EventExit;
-        EmotionEventHandler.current.onEventUnlock -= EventEnding;
         StartCoroutine("DestroyObject");
     }
 
     IEnumerator DestroyObject()
     {
         isDestroing = true;
-        EmotionEventHandler.current.OnCloseButtons();
+        ButtonEvents.current.OnCloseButtons();
 
-        EmotionEventHandler.current.onEventEnter -= EventStart;
         yield return new WaitForSeconds(destroyTime);
-        EmotionEventHandler.current.onTurnChange -= DestroyHelper;
         if(gameObject!=null)
             Destroy(gameObject);
     }
+
+    private void OnDisable()
+    {
+        EventSystem.StopListening("StartEvent", EventStart);
+        EventSystem.StopListening("ExitEvent", EventExit);
+        EventSystem.StopListening("EventEnded", EventEnding);
+        EventSystem.StopListening("EventDestroying", DestroyHelper);
+    }
+
     /// /// /// /// /// /// /// 
 
     /// /// /// /// /// /// /// 
