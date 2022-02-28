@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class EventTextControl : MonoBehaviour
 {
+    public static EventTextControl instance;
+    private void Awake()
+    {
+        if (instance == null) { instance = this; }
+        else { Destroy(gameObject); }
+    }
+
     //イベントUI
     [SerializeField] GameObject eventTextPanel;
     Image eventTextImage;
@@ -13,6 +20,12 @@ public class EventTextControl : MonoBehaviour
 
     //現在のイベントのテキストを読み込むリスト
     List<EventTextParser.EventTextInfo> currentInfo = new List<EventTextParser.EventTextInfo>();
+    //イベント結果を読み込むリスト
+    List<EventTextParser.EventTextInfo> resultInfo = new List<EventTextParser.EventTextInfo>();
+
+    bool isSetList = false;
+
+    public bool isEmotoChange;
 
     //仮のイベントID
     [SerializeField] string eventNum;
@@ -32,7 +45,7 @@ public class EventTextControl : MonoBehaviour
     //仮イベント確認用
     bool isEventStart;
     bool isEventEnd;
-    public static char resultText = 's';
+    public static string resultText = "n";
     private void OnEnable()
     {
         EventSystem.StartListening("ShowText", StartText);
@@ -48,6 +61,8 @@ public class EventTextControl : MonoBehaviour
         //パネルを非表示に
         eventTextPanel.SetActive(false);
 
+        isEmotoChange = false;
+
         //テキストボックスイメージの貼り付け
         eventTextImage = eventTextPanel.GetComponent<Image>();
         eventTextImage.sprite = Resources.Load<Sprite>("Sprite/EventText/textBox");
@@ -57,27 +72,32 @@ public class EventTextControl : MonoBehaviour
     {
         UiInit();
     }
-    
+
     // Update is called once per frame
     void Update()
     {
         Debug.Log(isTextSet);
     }
 
-    void StartText(Dictionary<string,object> message)
+    void StartText(Dictionary<string, object> message)
     {
-         if (isEventStart)
-         {
-             return;
-         }
-         EventStarted((string)message["id"]);
+        if (isEventStart)
+        {
+            return;
+        }
+        EventStarted((string)message["id"]);
 
-         isEventStart = true;
-         //Time.timeScale = 0;
+        isEventStart = true;
+        //Time.timeScale = 0;
     }
 
     void EventStarted(string eventID)
     {
+        if (isSetList)
+        {
+            return;
+        }
+
         //イベントパネルを可視化
         eventTextPanel.SetActive(true);
 
@@ -85,9 +105,9 @@ public class EventTextControl : MonoBehaviour
         currentRow = 0;
 
         //イベントIDと一致するテキストを別のリストに読み込み
-        foreach(EventTextParser.EventTextInfo line in EventTextParser.textInfo)
+        foreach (EventTextParser.EventTextInfo line in EventTextParser.textInfo)
         {
-            if(line.id == eventID)
+            if (line.id == eventID)
             {
                 currentInfo.Add(line);
             }
@@ -105,8 +125,47 @@ public class EventTextControl : MonoBehaviour
         {
             speakerImage.sprite = Resources.Load<Sprite>("Sprite/Mob/" + currentInfo[currentRow].spritePass);
         }
-        
+
         speakerName.text = currentInfo[currentRow].speakerName;
+
+        isSetList = true;
+    }
+
+    void EventResulted()
+    {
+        if (isSetList)
+        {
+            return;
+        }
+
+        //行数の初期化
+        currentRow = 0;
+
+        //イベント結果と一致するテキストを別のリストに読み込み
+        foreach (EventTextParser.EventTextInfo line in EventTextParser.textInfo)
+        {
+            if (line.id == EmoteButtonControl.currentEventID && line.state == resultText)
+            {
+                resultInfo.Add(line);
+            }
+        }
+
+        Debug.Log(resultInfo[0].textMesse);
+
+        //発話者のスプライトを切り替え
+
+        if (resultInfo[currentRow].spritePass == "Player")
+        {
+            speakerImage.sprite = Resources.Load<Sprite>("Sprite/Player/Player_Left");
+        }
+        else
+        {
+            speakerImage.sprite = Resources.Load<Sprite>("Sprite/Mob/" + resultInfo[currentRow].spritePass);
+        }
+
+        speakerName.text = resultInfo[currentRow].speakerName;
+
+        isSetList = true;
     }
 
     //表示する一文ずつ読み込む
@@ -122,97 +181,152 @@ public class EventTextControl : MonoBehaviour
         visibleLength = 0;
         textObj.text = "";
         isTextSet = true;
+
+        Debug.Log(text);
     }
 
     public void TextBoxUpdate(bool happiness, bool sadness, bool anger)
     {
-        if(isEventStart)
+        if (isEventStart)
         {
-            SetText(currentInfo[currentRow].textMesse);
-
-            //表示文字数が文全体の文字数より少ないとき
-            if (visibleLength < text.Length)
+            if (!isEmotoChange)
             {
-                pastTime += Time.deltaTime;
+                EventStarted(EmoteButtonControl.currentEventID);
 
-                //delayTimeを基準に一文字ずつ表示
-                if (pastTime >= delayTime)
+                SetText(currentInfo[currentRow].textMesse);
+
+                TypeWriterEffect();
+
+                Debug.Log(currentRow);
+
+                if (Input.GetMouseButtonDown(0))
                 {
-                    pastTime -= delayTime;
-                    visibleLength++;
-                    textObj.text = text.Substring(0, visibleLength);
+                    //文全体の表示が終わってなければ、全文表示
+                    if (visibleLength < text.Length)
+                    {
+                        visibleLength = text.Length;
+                        textObj.text = text;
+                    }
+                    else
+                    {
+                        //テキストのステータスが「！」の時、感情ボタンを出現させる
+                        if (currentInfo[currentRow].state == "!")
+                        {
+                            isSetList = false;
+
+                            //感情ボタンの表示
+                            ButtonEvents.current.OnShowButtonsTrigger(happiness, sadness, anger);
+
+                            if (isEmotoChange)
+                            {
+                                return;
+                            }
+                        }
+                        //行数を送る
+                        else
+                        {
+                            currentRow++;
+                        }
+
+                        SpriteChange(currentInfo, currentRow);
+
+                        isTextSet = false;
+                    }
                 }
             }
-
-            Debug.Log(currentRow);
-
-            if(Input.GetMouseButtonDown(0))
+            else
             {
-                //文全体の表示が終わってなければ、全文表示
-                if(visibleLength < text.Length)
+                Debug.Log(isEmotoChange);
+                Debug.Log("分岐突入");
+
+                EventResulted();
+
+                SetText(resultInfo[currentRow].textMesse);
+
+                TypeWriterEffect();
+
+                Debug.Log(currentRow);
+
+                if (Input.GetMouseButtonDown(0))
                 {
-                    visibleLength = text.Length;
-                    textObj.text = text;
-                }
-                else
-                {
-                    //リストの要素数の範囲を超えるなら
-                    if (currentRow == currentInfo.Count - 1)
+                    //文全体の表示が終わってなければ、全文表示
+                    if (visibleLength < text.Length)
                     {
-                        isEventEnd = true;
-                        isEventStart = false;
-                    }
-                    //行数を送る
-                    else
-                    {
-                        currentRow++;
-                    }
-
-                    if(currentInfo[currentRow].state == "!")
-                    {
-                        //感情ボタンの表示
-                        ButtonEvents.current.OnShowButtonsTrigger(happiness, sadness, anger);
-                        //結果のcharはresultTextに保存されている
-                            
-                    }
-
-
-
-
-                    //スプライトの切り替え
-                    if (currentInfo[currentRow].spritePass == "Player")
-                    {
-                        speakerImage.sprite = Resources.Load<Sprite>("Sprite/Player/Player_Left");
+                        visibleLength = text.Length;
+                        textObj.text = text;
                     }
                     else
                     {
-                        speakerImage.sprite = Resources.Load<Sprite>("Sprite/Mob/" + currentInfo[currentRow].spritePass);
+                        if (currentRow == resultInfo.Count - 1)
+                        {
+                            isSetList = false;
+                            isEventStart = false;
+                            isEventEnd = true;
+                        }
+                        else
+                        {
+                            currentRow++;
+                        }
                     }
 
-                    //名前の切り替え
-                    speakerName.text = currentInfo[currentRow].speakerName;
+                    SpriteChange(resultInfo, currentRow);
 
                     isTextSet = false;
-                    
                 }
             }
         }
 
-        if(isEventEnd)
+        if (isEventEnd)
         {
-            if(currentInfo == null)
+            if (currentInfo == null)
             {
                 return;
             }
 
-            resultText = 's';
+            resultText = "n";
             //使い終わったリストの中身を削除
             currentInfo.Clear();
+            resultInfo.Clear();
 
             //パネルを非表示に
             eventTextPanel.SetActive(false);
 
+            isEmotoChange = false;
             isEventEnd = false;
         }
+    }
+
+    void TypeWriterEffect()
+    {
+        //表示文字数が文全体の文字数より少ないとき
+        if (visibleLength < text.Length)
+        {
+            pastTime += Time.deltaTime;
+
+            //delayTimeを基準に一文字ずつ表示
+            if (pastTime >= delayTime)
+            {
+                pastTime -= delayTime;
+                visibleLength++;
+                textObj.text = text.Substring(0, visibleLength);
+            }
+        }
+    }
+
+
+    void SpriteChange(List<EventTextParser.EventTextInfo> info, int row)
+    {
+        //スプライトの切り替え
+        if (info[row].spritePass == "Player")
+        {
+            speakerImage.sprite = Resources.Load<Sprite>("Sprite/Player/Player_Left");
+        }
+        else
+        {
+            speakerImage.sprite = Resources.Load<Sprite>("Sprite/Mob/" + info[row].spritePass);
+        }
+
+        //名前の切り替え
+        speakerName.text = info[row].speakerName;
     }
 }
