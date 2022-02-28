@@ -17,6 +17,10 @@ public class EmoteButtonControl : MonoBehaviour
     [SerializeField] Vector3 placeLeft;
     [SerializeField] Vector3 placeRight;
 
+    [Header("StartButton")]
+    [SerializeField] GameObject startButton;
+    [SerializeField] Vector3 startButtonPos;
+
     //感情ボタンが配置されているかどうか
     private bool isButtonPlaced = false;
 
@@ -27,6 +31,7 @@ public class EmoteButtonControl : MonoBehaviour
     Button H_Button;
     Button S_Button;
     Button A_Button;
+    Button Start_Button;
 
     SE_Initializer audioPlayer;
     EventParentClass eventSystem;
@@ -74,7 +79,6 @@ public class EmoteButtonControl : MonoBehaviour
         {
             return;
         }
-
         if(h)
             ButtonPlacement(happinessButton, placeTop);
         if(s)
@@ -94,25 +98,23 @@ public class EmoteButtonControl : MonoBehaviour
     {
         //ボタンを非表示に
         happinessButton.SetActive(false);
-        
         sadnessButton.SetActive(false);
         angerButton.SetActive(false);
+        startButton.SetActive(true);
 
         //コンポーネントの取得
+        Start_Button = startButton.GetComponent<Button>();
         H_Button = happinessButton.GetComponent<Button>();
         S_Button = sadnessButton.GetComponent<Button>();
         A_Button = angerButton.GetComponent<Button>();
         audioPlayer = Camera.main.GetComponent<SE_Initializer>();
 
         //イベントリスナ―の追加
+        Start_Button.onClick.AddListener(StartButton);
         H_Button.onClick.AddListener(HappinessButton);
-
-
         S_Button.onClick.AddListener(SadnessButton);
         A_Button.onClick.AddListener(AngerButton);
     }
-
-
 
 
     void ButtonPlacement(GameObject obj,Vector3 place)
@@ -128,6 +130,12 @@ public class EmoteButtonControl : MonoBehaviour
         isButtonPlaced = false;
     }
 
+    public void StartButton()
+    {
+        Debug.Log("イベント開始");
+        Time.timeScale = 0;
+        startButton.SetActive(false);
+    }
 
     public void HappinessButton()
     {
