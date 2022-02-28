@@ -32,7 +32,16 @@ public class EventTextControl : MonoBehaviour
     //仮イベント確認用
     bool isEventStart;
     bool isEventEnd;
+    public static char resultText = 's';
+    private void OnEnable()
+    {
+        EventSystem.StartListening("ShowText", StartText);
+    }
 
+    private void OnDisable()
+    {
+        EventSystem.StopListening("ShowText", StartText);
+    }
 
     void UiInit()
     {
@@ -48,28 +57,26 @@ public class EventTextControl : MonoBehaviour
     {
         UiInit();
     }
-
+    
     // Update is called once per frame
     void Update()
     {
-        //Fキーが押されたタイミングでイベント発生（仮の処理
-        if(Input.GetKeyDown(KeyCode.F))
-        {
-            if(isEventStart)
-            {
-                return;
-            }
-            EventStarted();
-
-            isEventStart = true;
-            //Time.timeScale = 0;
-        }
-        TextBoxUpdate();
-
         Debug.Log(isTextSet);
     }
 
-    void EventStarted()
+    void StartText(Dictionary<string,object> message)
+    {
+         if (isEventStart)
+         {
+             return;
+         }
+         EventStarted((string)message["id"]);
+
+         isEventStart = true;
+         //Time.timeScale = 0;
+    }
+
+    void EventStarted(string eventID)
     {
         //イベントパネルを可視化
         eventTextPanel.SetActive(true);
@@ -80,7 +87,7 @@ public class EventTextControl : MonoBehaviour
         //イベントIDと一致するテキストを別のリストに読み込み
         foreach(EventTextParser.EventTextInfo line in EventTextParser.textInfo)
         {
-            if(line.id == eventNum)
+            if(line.id == eventID)
             {
                 currentInfo.Add(line);
             }
@@ -117,7 +124,7 @@ public class EventTextControl : MonoBehaviour
         isTextSet = true;
     }
 
-    void TextBoxUpdate()
+    public void TextBoxUpdate(bool happiness, bool sadness, bool anger)
     {
         if(isEventStart)
         {
@@ -164,7 +171,13 @@ public class EventTextControl : MonoBehaviour
                     if(currentInfo[currentRow].state == "!")
                     {
                         //感情ボタンの表示
+                        ButtonEvents.current.OnShowButtonsTrigger(happiness, sadness, anger);
+                        //結果のcharはresultTextに保存されている
+                            
                     }
+
+
+
 
                     //スプライトの切り替え
                     if (currentInfo[currentRow].spritePass == "Player")
@@ -192,6 +205,7 @@ public class EventTextControl : MonoBehaviour
                 return;
             }
 
+            resultText = 's';
             //使い終わったリストの中身を削除
             currentInfo.Clear();
 
