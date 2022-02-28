@@ -89,6 +89,8 @@ public class EmoteButtonControl : MonoBehaviour
             ButtonPlacement(sadnessButton, placeLeft);
         if(a)
             ButtonPlacement(angerButton, placeRight);
+
+        Time.timeScale = 0;
     }
 
     public void ButtonClose()
@@ -97,6 +99,9 @@ public class EmoteButtonControl : MonoBehaviour
         ButtonRemove(sadnessButton);
         ButtonRemove(angerButton);
         ButtonRemove(startButton);
+
+        EventTextControl.instance.isEmotoChange = true;
+        Time.timeScale = 1;
     }
 
     void ButtonInitialize()
@@ -144,27 +149,27 @@ public class EmoteButtonControl : MonoBehaviour
     }
 
 
-    public void HappinessButton(out char input)
+    public void HappinessButton(out string input)
     {
         //Œã‚©‚ç’Ç‰Á
         audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.seVolume1);
-        input = 'h';
+        input = "h";
         ButtonClose();
     }
 
-    public void SadnessButton(out char input)
+    public void SadnessButton(out string input)
     {
         //Œã‚©‚ç’Ç‰Á
         audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.seVolume1);
-        input = 's';
+        input = "s";
         ButtonClose();
     }
 
-    public void AngerButton(out char input)
+    public void AngerButton(out string input)
     {
         //Œã‚©‚ç’Ç‰Á
         audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.seVolume1);
-        input = 'a';
+        input = "a";
         ButtonClose();
     }
 
