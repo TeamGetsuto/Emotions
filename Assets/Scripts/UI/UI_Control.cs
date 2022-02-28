@@ -18,6 +18,8 @@ public class UI_Control : MonoBehaviour
     Button reTurn;
     Button title;
 
+
+
     [Header("Text")]
     [SerializeField] Text turnText;
     [SerializeField] Text dayText;

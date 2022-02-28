@@ -29,6 +29,15 @@ public class EventParentClass : MonoBehaviour
     [SerializeField] bool canUseHappiness   = false;
     [SerializeField] bool canUseSadness     = false;
     [SerializeField] bool canUseAnger       = false;
+   
+    //その他
+    EventTextControl textControl;
+    EmoteButtonControl buttonControl;
+    private void Start()
+    {
+        textControl = GameObject.Find("UI_System").GetComponent<EventTextControl>();
+        buttonControl = GameObject.Find("Player").GetComponent<EmoteButtonControl>();
+    }
 
 
     //イベント初期化
@@ -41,40 +50,51 @@ public class EventParentClass : MonoBehaviour
         EventSystem.StartListening("EventDestroying", DestroyHelper);
     }
 
- 
+
     /// /// /// /// /// /// /// 
-    
+
     /// /// /// /// /// /// /// 
     //     イベント管理      //
     /// /// /// /// /// /// /// 
 
     /// /// /// /// /// /// /// 
     //イベントを始まる際  
+    public static bool isStarted;
     protected void EventPlayerCheck(float radius, Vector3 eventOffset)
     {
         if (Physics.CheckSphere(transform.position + eventOffset, radius, layer) && !eventEnded)
-        { 
+        {
+            EmoteButtonControl.currentEventID = id;
+            //イベントのIDをボタンに伝える
+            if (!isStarted)
+            {
+                buttonControl.ShowStart();
+            }
+            else
+            {
+                textControl.TextBoxUpdate(canUseHappiness, canUseSadness, canUseAnger);
+            }
+
             Debug.Log("Inside");
             //仮
             /// //////////
-            if(!isDestroing)
-                ButtonEvents.current.OnShowButtonsTrigger(canUseHappiness, canUseSadness, canUseAnger);
-            else ButtonEvents.current.OnCloseButtons();
+            //if(!isDestroing)
+            //    ButtonEvents.current.OnShowButtonsTrigger(canUseHappiness, canUseSadness, canUseAnger);
+            //else ButtonEvents.current.OnCloseButtons();
 
-            input = ButtonEvents.current.OnButtonPush();
+            //input = ButtonEvents.current.OnButtonPush();
 
             /// //////////
-            if (input != -1)
-            {
-                ButtonEvents.current.OnCloseButtons();
-                EventSystem.TriggerEvent("StartEvent", new Dictionary<string, object> { {"id", id},{"input", input} });
-            }
-                isInside = true;
+            //if (input != -1)
+            //{
+            //    ButtonEvents.current.OnCloseButtons();
+            //    EventSystem.TriggerEvent("StartEvent", new Dictionary<string, object> { {"id", id},{"input", input} });
+            //}
+            isInside = true;
         }
-
         else if(isInside)
         {
-            EventSystem.TriggerEvent("ExitEvent", new Dictionary<string, object> { { "id", id} });
+            buttonControl.ButtonClose();
             isInside = false;
         }
     }
@@ -204,8 +224,8 @@ public class EventParentClass : MonoBehaviour
         EventSystem.StopListening("ExitEvent", EventExit);
         EventSystem.StopListening("EventEnded", EventEnding);
         EventSystem.StopListening("EventDestroying", DestroyHelper);
+        EventSystem.StopListening("ShowButtons", DestroyHelper);
     }
-
     /// /// /// /// /// /// /// 
 
     /// /// /// /// /// /// /// 

@@ -46,13 +46,6 @@ public class EmotionSystem : MonoBehaviour
     /// //////////
     /// ŠÖ”
     /// //////////
-
-    void Start()
-    {
-        
-    }
-
-
     //Š´î‚Ì’l‚ğ•Ï‚¦‚éŠÖ”
     public void PlayerEventEmotionChange(int eHap, int eSad, int eAng)
     {

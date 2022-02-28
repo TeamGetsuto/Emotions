@@ -24,8 +24,7 @@ public class EmoteButtonControl : MonoBehaviour
     //感情ボタンが配置されているかどうか
     private bool isButtonPlaced = false;
 
-    //感情ボタンが押されたかどうか
-    private bool isButtonPushed = false;
+    public static string currentEventID;
 
     //イベントリスナーとなるボタンコンポーネント
     Button H_Button;
@@ -42,7 +41,6 @@ public class EmoteButtonControl : MonoBehaviour
     {
         ButtonEvents.current.onShowButtons += ButtonShow;
         ButtonEvents.current.onCloseButtons += ButtonClose;
-        ButtonEvents.current.onButtonPush += InputEmot;
     }
 
     // Start is called before the first frame update
@@ -73,6 +71,12 @@ public class EmoteButtonControl : MonoBehaviour
         ButtonInitialize();
     }
 
+    public void ShowStart()
+    {
+        startButton.SetActive(true);
+    }
+
+
     void ButtonShow(bool h, bool s, bool a)
     {
         if (isButtonPlaced)
@@ -87,20 +91,21 @@ public class EmoteButtonControl : MonoBehaviour
             ButtonPlacement(angerButton, placeRight);
     }
 
-    void ButtonClose()
+    public void ButtonClose()
     {
-        string emotion = "";
         ButtonRemove(happinessButton);
         ButtonRemove(sadnessButton);
         ButtonRemove(angerButton);
+        ButtonRemove(startButton);
     }
+
     void ButtonInitialize()
     {
         //ボタンを非表示に
         happinessButton.SetActive(false);
         sadnessButton.SetActive(false);
         angerButton.SetActive(false);
-        startButton.SetActive(true);
+        startButton.SetActive(false);
 
         //コンポーネントの取得
         Start_Button = startButton.GetComponent<Button>();
@@ -110,10 +115,10 @@ public class EmoteButtonControl : MonoBehaviour
         audioPlayer = Camera.main.GetComponent<SE_Initializer>();
 
         //イベントリスナ―の追加
-        Start_Button.onClick.AddListener(StartButton);
-        H_Button.onClick.AddListener(HappinessButton);
-        S_Button.onClick.AddListener(SadnessButton);
-        A_Button.onClick.AddListener(AngerButton);
+        Start_Button.onClick.AddListener(() => StartButton  (out EventParentClass.isStarted));
+        H_Button.onClick.AddListener(() => HappinessButton  (out EventTextControl.resultText));
+        S_Button.onClick.AddListener(() => SadnessButton    (out EventTextControl.resultText));
+        A_Button.onClick.AddListener(() => AngerButton      (out EventTextControl.resultText));
     }
 
 
@@ -130,59 +135,38 @@ public class EmoteButtonControl : MonoBehaviour
         isButtonPlaced = false;
     }
 
-    public void StartButton()
+
+    public void StartButton(out bool input)
     {
-        Debug.Log("イベント開始");
-        Time.timeScale = 0;
+        input = true;
         startButton.SetActive(false);
+        EventSystem.TriggerEvent("ShowText", new Dictionary<string, object> { { "id", currentEventID } });
     }
 
-    public void HappinessButton()
+
+    public void HappinessButton(out char input)
     {
         //後から追加
         audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.seVolume1);
-        isButtonPushed = true;
-        Debug.Log("Happiness");
-        emotion = "Hap";
+        input = 'h';
+        ButtonClose();
     }
 
-    public void SadnessButton()
+    public void SadnessButton(out char input)
     {
         //後から追加
         audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.seVolume1);
-        isButtonPushed = true;
-        Debug.Log("Sadness");
-        emotion = "Sad";
+        input = 's';
+        ButtonClose();
     }
 
-    public void AngerButton()
+    public void AngerButton(out char input)
     {
         //後から追加
         audioPlayer.AudioPlay(audioPlayer.emoteEffect, audioPlayer.seVolume1);
-        isButtonPushed = true;
-        Debug.Log("Anger");
-        emotion = "Ang";
+        input = 'a';
+        ButtonClose();
     }
 
-    int InputEmot()
-    {
-
-        int a = InputEmotion(emotion);
-        emotion = "";
-        return a;
-    }
-
-    int InputEmotion(string emotion)
-    {
-        if (emotion == "Hap")
-        {
-            return 0;
-        }
-        if (emotion == "Sad")
-            return 1;
-        if (emotion == "Ang")
-            return 2;
-        return -1;
-    }
 
 }
