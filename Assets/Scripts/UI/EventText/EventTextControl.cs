@@ -194,8 +194,6 @@ public class EventTextControl : MonoBehaviour
         visibleLength = 0;
         textObj.text = "";
         isTextSet = true;
-
-        Debug.Log(text);
     }
 
     public void TextBoxUpdate(bool happiness, bool sadness, bool anger)
@@ -213,7 +211,7 @@ public class EventTextControl : MonoBehaviour
                 TypeWriterEffect();
 
                 Debug.Log(currentRow);
-
+                
                 if (Input.GetMouseButtonDown(0))
                 {
                     //文全体の表示が終わってなければ、全文表示
@@ -230,16 +228,16 @@ public class EventTextControl : MonoBehaviour
                             //感情ボタンの表示
                             ButtonEvents.current.OnShowButtonsTrigger(happiness, sadness, anger);
                         }
-                        //行数を送る
                         else
                         {
-
+                            //行数を送る
                             currentRow++;
                         }
 
                         SpriteChange(currentInfo, currentRow);
 
                         isTextSet = false;
+
                     }
                 }
             }
@@ -247,7 +245,7 @@ public class EventTextControl : MonoBehaviour
             {
                 Debug.Log(isEmotoChange);
                 Debug.Log("分岐突入");
-               
+
                 EventResulted();
 
                 SetText(resultInfo[currentRow].textMesse);
@@ -261,27 +259,29 @@ public class EventTextControl : MonoBehaviour
                     //文全体の表示が終わってなければ、全文表示
                     if (visibleLength < text.Length)
                     {
+                        Debug.LogWarning(text + text.Length);
+                        Debug.LogWarning(visibleLength);
                         visibleLength = text.Length;
+                        Debug.LogWarning("クリックされました" + visibleLength);
                         textObj.text = text;
                     }
                     else
                     {
+                        currentRow++;
+
                         if (currentRow == resultInfo.Count - 1)
                         {
+                            currentRow--;
                             isSetList = false;
                             isEventStart = false;
                             isEventEnd = true;
                             EventSystem.TriggerEvent("StartEvent", new Dictionary<string, object> { { "id", EmoteButtonControl.currentEventID }, { "input", resultText } });
                         }
-                        else
-                        {
-                            currentRow++;
-                        }
+
+                        isTextSet = false;
                     }
 
-                    SpriteChange(resultInfo, currentRow);
-
-                    isTextSet = false;
+                    SpriteChange(resultInfo, currentRow); 
                 }
             }
         }
@@ -309,6 +309,7 @@ public class EventTextControl : MonoBehaviour
 
     void TypeWriterEffect()
     {
+        Debug.LogWarning("typeWriterEffect_start");
         //表示文字数が文全体の文字数より少ないとき
         if (visibleLength < text.Length)
         {
@@ -321,6 +322,8 @@ public class EventTextControl : MonoBehaviour
                 pastTime -= delayTime;
                 visibleLength++;
                 textObj.text = text.Substring(0, visibleLength);
+
+                Debug.Log("現在の文字数" + visibleLength);
             }
         }
     }
