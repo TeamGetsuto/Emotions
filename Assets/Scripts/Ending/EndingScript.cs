@@ -131,7 +131,7 @@ public class EndingScript : MonoBehaviour
         {
             resulutText.text = " ‚İ‚ñ‚È‚ª“{‚è‚ÌŠ´î‚É‚È‚Á‚½c";
         }
-        else if(emotionNum == 4)
+        else if(emotionNum == 3)
         {
             resulutText.text = "‚İ‚ñ‚È‚ÌŠ´î‚ª—‚¿’…‚«‚ğæ‚è–ß‚µ‚½";
         }

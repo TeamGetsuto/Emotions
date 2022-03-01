@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingGirl : EventParentClass
+public class MovingBoy : EventParentClass
 {
     //eventHasEnded Çtrue Ç…ê›íËÇ∑ÇÈ
-    
+
+    SpriteRenderer spriteRenderer;
+    [SerializeField] Sprite spriteHappy;
+    [SerializeField] Sprite spriteAnger;
+
     //Ç±ÇÃä÷êîÇïœÇ¶ÇΩÇÁÇ»Ç¢ÅI
     /// /// /// /// /// /// /// ///
     void FixedUpdate()
@@ -21,21 +25,22 @@ public class MovingGirl : EventParentClass
     protected override void EventHappiness()
     {
         Debug.Log("äÏÇ—Çî≠ê∂ÇµÇ‹ÇµÇΩ");
-        EmotionSystem.current.PlayerEventEmotionChange(20, 0, -10);
+        spriteRenderer.sprite = spriteHappy;
+        EmotionSystem.current.PlayerEventEmotionChange(20, -10, 0);
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
         Debug.Log("îﬂÇµÇ›Çî≠ê∂ÇµÇ‹ÇµÇΩ");
-        EmotionSystem.current.PlayerEventEmotionChange(-10, 20, 0);
         animatiionEnded = true;
     }
 
     protected override void EventAnger()
     {
         Debug.Log("ì{ÇËÇî≠ê∂ÇµÇ‹ÇµÇΩ");
-        EmotionSystem.current.PlayerEventEmotionChange(0, -10, 20);
+        spriteRenderer.sprite = spriteAnger;
+        EmotionSystem.current.PlayerEventEmotionChange(-10, -10, 20);
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 
