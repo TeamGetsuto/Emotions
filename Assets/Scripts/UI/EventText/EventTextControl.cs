@@ -216,7 +216,6 @@ public class EventTextControl : MonoBehaviour
 
                             //感情ボタンの表示
                             ButtonEvents.current.OnShowButtonsTrigger(happiness, sadness, anger);
-
                             if (isEmotoChange)
                             {
                                 return;
@@ -225,6 +224,7 @@ public class EventTextControl : MonoBehaviour
                         //行数を送る
                         else
                         {
+
                             currentRow++;
                         }
 
@@ -242,7 +242,7 @@ public class EventTextControl : MonoBehaviour
                 EventResulted();
 
                 SetText(resultInfo[currentRow].textMesse);
-
+                
                 TypeWriterEffect();
 
                 Debug.Log(currentRow);
@@ -262,6 +262,7 @@ public class EventTextControl : MonoBehaviour
                             isSetList = false;
                             isEventStart = false;
                             isEventEnd = true;
+                            EventSystem.TriggerEvent("StartEvent", new Dictionary<string, object> { { "id", EmoteButtonControl.currentEventID }, { "input", resultText } });
                         }
                         else
                         {
@@ -283,16 +284,18 @@ public class EventTextControl : MonoBehaviour
                 return;
             }
 
-            resultText = "n";
+            EventSystem.TriggerEvent("EventEnded", new Dictionary<string, object> { { "id", EmoteButtonControl.currentEventID }, { "input", resultText } });
             //使い終わったリストの中身を削除
             currentInfo.Clear();
             resultInfo.Clear();
-
             //パネルを非表示に
+            resultText = "n";
             eventTextPanel.SetActive(false);
 
             isEmotoChange = false;
             isEventEnd = false;
+  
+            EventParentClass.isStarted = false;
         }
     }
 
