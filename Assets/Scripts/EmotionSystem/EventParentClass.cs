@@ -23,7 +23,7 @@ public class EventParentClass : MonoBehaviour
     private bool isInside = false;
     private bool isDestroing = false;
     /// /// /// /// /// /// /// 
-    protected bool animatiionEnded = false;
+    protected bool animatiionEnded = true;
     //伝えられる感情
     [Header("Usable Emotions")]
     [SerializeField] bool canUseHappiness   = false;
@@ -45,7 +45,6 @@ public class EventParentClass : MonoBehaviour
     private void OnEnable()
     {
         EventSystem.StartListening("StartEvent", EventStart);
-        EventSystem.StartListening("ExitEvent", EventExit);
         EventSystem.StartListening("EventEnded", EventEnding);
         EventSystem.StartListening("EventDestroying", DestroyHelper);
     }
@@ -85,11 +84,6 @@ public class EventParentClass : MonoBehaviour
             //input = ButtonEvents.current.OnButtonPush();
 
             /// //////////
-            //if (input != -1)
-            //{
-            //    ButtonEvents.current.OnCloseButtons();
-            //    EventSystem.TriggerEvent("StartEvent", new Dictionary<string, object> { {"id", id},{"input", input} });
-            //}
             isInside = true;
         }
         else if(isInside)
@@ -100,18 +94,6 @@ public class EventParentClass : MonoBehaviour
     }
     /// /// /// /// /// /// /// 
 
-    //イベントから離れる際
-    /// /// /// /// /// /// /// 
-    protected void EventExit(Dictionary<string, object> message)
-    {
-        string id = (string)message["id"];
-        if (id == this.id)
-        {
-            Debug.Log("Out");
-            ButtonEvents.current.OnCloseButtons();
-            //UIを閉じる
-        }
-    }
     /// /// /// /// /// /// /// 
 
     /// /// /// /// /// /// /// 
@@ -121,42 +103,36 @@ public class EventParentClass : MonoBehaviour
     /// /// /// /// /// /// /// 
     protected void EventStart(Dictionary<string, object> message)
     {
-        int input = (int)message["input"];
+        string input = (string)message["input"];
         string id = (string)message["id"];
-
+        Debug.Log("StartedEvent!!!! --- ");
         if (id == this.id)
         {
             switch (input)
             {
-                case 0:
+                case "h":
                     //削除するかどうか後で決める
                     ///
                     if (canUseHappiness)
                     {
                     ///
                         EventHappiness();
-                        eventEnded = true;
                     }
                     break;
-                case 1:
+                case "s":
                     if (canUseSadness)
                     {
                         EventSadness();
-                        eventEnded = true;
                     }
                     break;
-                case 2:
+                case "a":
                     if (canUseAnger)
                     {
                         EventAnger();
-                        eventEnded = true;
                     }
                     break;
                     
             }
-            //イベントの結果
-            if(animatiionEnded)
-                EventSystem.TriggerEvent("EventEnded", new Dictionary<string, object> { { "id", id }, {"input", input } });
         }
     }
     /// /// /// /// /// /// /// 
@@ -164,14 +140,14 @@ public class EventParentClass : MonoBehaviour
     //イベント結果を管理する関数
     protected void EventEnding(Dictionary<string, object> message)
     {
-        int input = (int)message["input"];
+        string input = (string)message["input"];
         string id = (string)message["id"];
 
         if (id == this.id)
         {
             switch (input)
             {
-                case 0:
+                case "h":
                     //削除するかどうか後で決める
                     ///
                     if (canUseHappiness)
@@ -180,20 +156,20 @@ public class EventParentClass : MonoBehaviour
                         Parser.eventListManager[Parser.GetIndexByEventID(id)][0] = true;
                     }
                     break;
-                case 1:
+                case "s":
                     if (canUseSadness)
                     {
                         Parser.eventListManager[Parser.GetIndexByEventID(id)][1] = true;
                     }
                     break;
-                case 2:
+                case "a":
                     if (canUseAnger)
                     {
                         Parser.eventListManager[Parser.GetIndexByEventID(id)][2] = true;
-
                     }
                     break;
             }
+            eventEnded = true;
             TurnSystem.eventHasEnded = true;
             //イベントを破棄
             StartCoroutine("DestroyObject");   
@@ -221,10 +197,8 @@ public class EventParentClass : MonoBehaviour
     private void OnDisable()
     {
         EventSystem.StopListening("StartEvent", EventStart);
-        EventSystem.StopListening("ExitEvent", EventExit);
         EventSystem.StopListening("EventEnded", EventEnding);
         EventSystem.StopListening("EventDestroying", DestroyHelper);
-        EventSystem.StopListening("ShowButtons", DestroyHelper);
     }
     /// /// /// /// /// /// /// 
 
