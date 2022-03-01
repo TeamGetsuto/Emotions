@@ -8,6 +8,7 @@ public class TrashGrandpa : EventParentClass
 
     SpriteRenderer spriteRenderer;
     [SerializeField] Sprite spriteHappy;
+    [SerializeField] Sprite spriteSadness;
     [SerializeField] Sprite spriteAnger;
     private void Awake()
     {
@@ -27,7 +28,7 @@ public class TrashGrandpa : EventParentClass
     protected override void EventHappiness()
     {
         Debug.Log("1");
-
+        spriteRenderer.sprite = spriteHappy;
         EmotionSystem.current.PlayerEventEmotionChange(20, 0, -10);
         animatiionEnded = true;
     }
@@ -35,6 +36,7 @@ public class TrashGrandpa : EventParentClass
     protected override void EventSadness()
     {
         Debug.Log("2");
+        spriteRenderer.sprite = spriteSadness;
         EmotionSystem.current.PlayerEventEmotionChange(-10, 20, 0);
         animatiionEnded = true;
     }
@@ -42,6 +44,7 @@ public class TrashGrandpa : EventParentClass
     protected override void EventAnger()
     {
         Debug.Log("3");
+        spriteRenderer.sprite = spriteAnger;
         EmotionSystem.current.PlayerEventEmotionChange(0, -10, 20);
         animatiionEnded = true;
     }
