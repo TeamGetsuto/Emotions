@@ -117,6 +117,8 @@ public class EventTextControl : MonoBehaviour
             return;
         }
 
+        EventStartInit();
+
         //イベントIDと一致するテキストを別のリストに読み込み
         foreach (EventTextParser.EventTextInfo line in EventTextParser.textInfo)
         {
@@ -129,16 +131,8 @@ public class EventTextControl : MonoBehaviour
         Debug.Log("リストの読み込み完了" + currentInfo.Count);
 
         //発話者のスプライトを切り替え
-
-        if (currentInfo[currentRow].spritePass == "Player")
-        {
-            speakerImage.sprite = Resources.Load<Sprite>("Sprite/Player/Player_Left");
-        }
-        else
-        {
-            speakerImage.sprite = Resources.Load<Sprite>("Sprite/Mob/" + currentInfo[currentRow].spritePass);
-        }
-
+        Debug.LogWarning("スプライト確認" + currentInfo[currentRow].spritePass);
+        SpriteChange(currentInfo, currentRow);
         speakerName.text = currentInfo[currentRow].speakerName;
 
         isSetList = true;
@@ -163,19 +157,13 @@ public class EventTextControl : MonoBehaviour
             }
         }
 
+        EventTextParser.EventTextInfo temp = default;
+        resultInfo.Add(temp);
+
         Debug.Log("リストの読み込み完了" + resultInfo.Count);
 
         //発話者のスプライトを切り替え
-
-        if (resultInfo[currentRow].spritePass == "Player")
-        {
-            speakerImage.sprite = Resources.Load<Sprite>("Sprite/Player/Player_Left");
-        }
-        else
-        {
-            speakerImage.sprite = Resources.Load<Sprite>("Sprite/Mob/" + resultInfo[currentRow].spritePass);
-        }
-
+        SpriteChange(resultInfo, currentRow);
         speakerName.text = resultInfo[currentRow].speakerName;
 
         isSetList = true;
@@ -200,8 +188,6 @@ public class EventTextControl : MonoBehaviour
     {
         if (isEventStart)
         {
-            EventStartInit();
-
             if (!isEmotoChange)
             {
                 EventStarted(EmoteButtonControl.currentEventID);
@@ -234,11 +220,13 @@ public class EventTextControl : MonoBehaviour
                             currentRow++;
                         }
 
-                        SpriteChange(currentInfo, currentRow);
-
                         isTextSet = false;
-
                     }
+
+                    SpriteChange(currentInfo, currentRow);
+
+                    
+
                 }
             }
             else
@@ -269,8 +257,9 @@ public class EventTextControl : MonoBehaviour
                     {
                         currentRow++;
 
-                        if (currentRow == resultInfo.Count - 1)
+                        if (resultInfo.Count - 1 == currentRow)
                         {
+                            Debug.Log("分岐２突入");
                             currentRow--;
                             isSetList = false;
                             isEventStart = false;
@@ -278,7 +267,7 @@ public class EventTextControl : MonoBehaviour
                             EventSystem.TriggerEvent("StartEvent", new Dictionary<string, object> { { "id", EmoteButtonControl.currentEventID }, { "input", resultText } });
                         }
 
-                        isTextSet = false;
+                            isTextSet = false;
                     }
 
                     SpriteChange(resultInfo, currentRow); 
@@ -322,8 +311,6 @@ public class EventTextControl : MonoBehaviour
                 pastTime -= delayTime;
                 visibleLength++;
                 textObj.text = text.Substring(0, visibleLength);
-
-                Debug.Log("現在の文字数" + visibleLength);
             }
         }
     }
