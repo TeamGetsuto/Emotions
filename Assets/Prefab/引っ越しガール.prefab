@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7164494186386421487}
   - component: {fileID: 6337080720224296881}
   m_Layer: 0
-  m_Name: Mob_Girl_09
+  m_Name: Boy01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ba83456e0a970da4ca45ced87d457f38, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 939d78fd64a90d64f8ad8c9d0c110632, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
