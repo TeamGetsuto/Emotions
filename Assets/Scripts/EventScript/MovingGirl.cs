@@ -21,21 +21,21 @@ public class MovingGirl : EventParentClass
     protected override void EventHappiness()
     {
         Debug.Log("äÏÇ—Çî≠ê∂ÇµÇ‹ÇµÇΩ");
-        EmotionSystem.current.PlayerEventEmotionChange(10, -20, 5);
+        EmotionSystem.current.PlayerEventEmotionChange(20, 0, -10);
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
         Debug.Log("îﬂÇµÇ›Çî≠ê∂ÇµÇ‹ÇµÇΩ");
-        EmotionSystem.current.PlayerEventEmotionChange(0, -5, -5);
+        EmotionSystem.current.PlayerEventEmotionChange(-10, 20, 0);
         animatiionEnded = true;
     }
 
     protected override void EventAnger()
     {
         Debug.Log("ì{ÇËÇî≠ê∂ÇµÇ‹ÇµÇΩ");
-        EmotionSystem.current.PlayerEventEmotionChange(-10, -10, 10);
+        EmotionSystem.current.PlayerEventEmotionChange(0, -10, 20);
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 

@@ -30,10 +30,15 @@ public class EndingScript : MonoBehaviour
 
         staticObject = GameObject.Find("TurnSystem").GetComponent<EmotionSystem>();
 
-        if (staticObject.cityEmotionAnger > staticObject.cityEmotionHappiness && staticObject.cityEmotionAnger > staticObject.cityEmotionSadness)
+        int HsubA = Mathf.Abs(staticObject.playerEmotionAnger - staticObject.playerEmotionHappiness);
+        int HsubS = Mathf.Abs(staticObject.playerEmotionHappiness - staticObject.playerEmotionSadness);
+        int AsubS = Mathf.Abs(staticObject.playerEmotionSadness - staticObject.playerEmotionAnger);
+
+        if(HsubA <= 10 && HsubS <= 10 && AsubS <= 10)
+            emotionNum = 3;
+        else if (staticObject.playerEmotionAnger > staticObject.playerEmotionHappiness && staticObject.playerEmotionAnger > staticObject.playerEmotionSadness)
             emotionNum = 2;
-        else
-        if (staticObject.cityEmotionAnger < staticObject.cityEmotionHappiness && staticObject.cityEmotionHappiness > staticObject.cityEmotionSadness)
+        else if (staticObject.playerEmotionAnger < staticObject.playerEmotionHappiness && staticObject.playerEmotionHappiness > staticObject.playerEmotionSadness)
             emotionNum = 0;
         else
             emotionNum = 1;
@@ -125,6 +130,10 @@ public class EndingScript : MonoBehaviour
         else if (emotionNum == 2)
         {
             resulutText.text = " Ç›ÇÒÇ»Ç™ì{ÇËÇÃä¥èÓÇ…Ç»Ç¡ÇΩÅc";
+        }
+        else if(emotionNum == 4)
+        {
+            resulutText.text = "Ç›ÇÒÇ»ÇÃä¥èÓÇ™óéÇøíÖÇ´ÇéÊÇËñﬂÇµÇΩ";
         }
     }
     void SetAlpha()

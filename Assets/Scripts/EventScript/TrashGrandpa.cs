@@ -28,21 +28,21 @@ public class TrashGrandpa : EventParentClass
     {
         Debug.Log("1");
 
-        EmotionSystem.current.PlayerEventEmotionChange(15, -10, -10);
+        EmotionSystem.current.PlayerEventEmotionChange(20, 0, -10);
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
         Debug.Log("2");
-        EmotionSystem.current.PlayerEventEmotionChange(0, 15, 0);
+        EmotionSystem.current.PlayerEventEmotionChange(-10, 20, 0);
         animatiionEnded = true;
     }
 
     protected override void EventAnger()
     {
         Debug.Log("3");
-        EmotionSystem.current.PlayerEventEmotionChange(-10, -10, 20);
+        EmotionSystem.current.PlayerEventEmotionChange(0, -10, 20);
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 
