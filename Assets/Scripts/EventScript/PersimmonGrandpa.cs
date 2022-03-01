@@ -2,45 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingBoy : EventParentClass
+public class PersimmonGrandpa : EventParentClass
 {
     //eventHasEnded をtrue に設定する
 
     SpriteRenderer spriteRenderer;
     [SerializeField] Sprite spriteHappy;
-    [SerializeField] Sprite spriteAnger;
 
-    //この関数を変えたらない！
-    /// /// /// /// /// /// /// ///
+    private void Awake()
+    {
+        spriteRenderer = transform.Find("Effect").GetComponent<SpriteRenderer>();
+    }
+
+
+    //プレイヤーが近いかどうか確認
     void FixedUpdate()
     {
         //プレイヤーの確認 ↓半径      ↓オフセット  使っているのはCheckSphere（球体）
         EventPlayerCheck(base.eventRadius, base.eventOffset);
     }
-    /// /// /// /// /// /// /// ///
-    
     //例としてこういう形になります
     /// /// /// /// /// /// /// 
 
     protected override void EventHappiness()
     {
-        Debug.Log("喜びを発生しました");
+        Debug.Log("1");
         spriteRenderer.sprite = spriteHappy;
-        EmotionSystem.current.PlayerEventEmotionChange(20, -10, 0);
+        EmotionSystem.current.PlayerEventEmotionChange(20, 0, -10);
         animatiionEnded = true;
     }
 
     protected override void EventSadness()
     {
-        Debug.Log("悲しみを発生しました");
+        Debug.Log("2");
         animatiionEnded = true;
     }
 
     protected override void EventAnger()
     {
-        Debug.Log("怒りを発生しました");
-        spriteRenderer.sprite = spriteAnger;
-        EmotionSystem.current.PlayerEventEmotionChange(-10, -10, 20);
+        Debug.Log("3");
+        EmotionSystem.current.PlayerEventEmotionChange(-10, 0, 20);
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 
@@ -48,6 +49,6 @@ public class MovingBoy : EventParentClass
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + base.eventOffset, base.eventRadius);
+        Gizmos.DrawWireSphere(transform.position, base.eventRadius);
     }
 }
