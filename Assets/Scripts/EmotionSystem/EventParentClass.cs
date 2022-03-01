@@ -61,6 +61,9 @@ public class EventParentClass : MonoBehaviour
     public static bool isStarted;
     protected void EventPlayerCheck(float radius, Vector3 eventOffset)
     {
+        if (isDestroing)
+            return;
+
         if (Physics.CheckSphere(transform.position + eventOffset, radius, layer) && !eventEnded)
         {
             EmoteButtonControl.currentEventID = id;
