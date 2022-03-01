@@ -22,8 +22,8 @@ public class EventTextControl : MonoBehaviour
     List<EventTextParser.EventTextInfo> currentInfo = new List<EventTextParser.EventTextInfo>();
     //イベント結果を読み込むリスト
     List<EventTextParser.EventTextInfo> resultInfo = new List<EventTextParser.EventTextInfo>();
-
-    bool isSetList = false;
+    bool isInitialize = false;
+    public bool isSetList = false;
 
     public bool isEmotoChange;
 
@@ -67,6 +67,25 @@ public class EventTextControl : MonoBehaviour
         eventTextImage = eventTextPanel.GetComponent<Image>();
         eventTextImage.sprite = Resources.Load<Sprite>("Sprite/EventText/textBox");
     }
+
+    void EventStartInit()
+    {
+        if(isInitialize)
+        {
+            return;
+        }
+
+        //イベントパネルを可視化
+        eventTextPanel.SetActive(true);
+
+        //行数の初期化
+        currentRow = 0;
+
+        //感情変化のブールをfalseに
+        isEmotoChange = false;
+
+        isInitialize = true;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -98,12 +117,6 @@ public class EventTextControl : MonoBehaviour
             return;
         }
 
-        //イベントパネルを可視化
-        eventTextPanel.SetActive(true);
-
-        //行数の初期化
-        currentRow = 0;
-
         //イベントIDと一致するテキストを別のリストに読み込み
         foreach (EventTextParser.EventTextInfo line in EventTextParser.textInfo)
         {
@@ -113,7 +126,7 @@ public class EventTextControl : MonoBehaviour
             }
         }
 
-        Debug.Log(currentInfo.Count);
+        Debug.Log("リストの読み込み完了" + currentInfo.Count);
 
         //発話者のスプライトを切り替え
 
@@ -150,7 +163,7 @@ public class EventTextControl : MonoBehaviour
             }
         }
 
-        Debug.Log(resultInfo[0].textMesse);
+        Debug.Log("リストの読み込み完了" + resultInfo.Count);
 
         //発話者のスプライトを切り替え
 
@@ -189,6 +202,8 @@ public class EventTextControl : MonoBehaviour
     {
         if (isEventStart)
         {
+            EventStartInit();
+
             if (!isEmotoChange)
             {
                 EventStarted(EmoteButtonControl.currentEventID);
@@ -212,14 +227,8 @@ public class EventTextControl : MonoBehaviour
                         //テキストのステータスが「！」の時、感情ボタンを出現させる
                         if (currentInfo[currentRow].state == "!")
                         {
-                            isSetList = false;
-
                             //感情ボタンの表示
                             ButtonEvents.current.OnShowButtonsTrigger(happiness, sadness, anger);
-                            if (isEmotoChange)
-                            {
-                                return;
-                            }
                         }
                         //行数を送る
                         else
@@ -238,7 +247,7 @@ public class EventTextControl : MonoBehaviour
             {
                 Debug.Log(isEmotoChange);
                 Debug.Log("分岐突入");
-
+               
                 EventResulted();
 
                 SetText(resultInfo[currentRow].textMesse);
@@ -279,22 +288,21 @@ public class EventTextControl : MonoBehaviour
 
         if (isEventEnd)
         {
-            if (currentInfo == null)
-            {
-                return;
-            }
+            Debug.Log("イベント終了");
 
-            EventSystem.TriggerEvent("EventEnded", new Dictionary<string, object> { { "id", EmoteButtonControl.currentEventID }, { "input", resultText } });
             //使い終わったリストの中身を削除
             currentInfo.Clear();
             resultInfo.Clear();
+          
             //パネルを非表示に
             resultText = "n";
             eventTextPanel.SetActive(false);
+            isInitialize = false;
 
-            isEmotoChange = false;
+            EventSystem.TriggerEvent("EventEnded", new Dictionary<string, object> { { "id", EmoteButtonControl.currentEventID }, { "input", resultText } });
+
             isEventEnd = false;
-  
+
             EventParentClass.isStarted = false;
         }
     }
@@ -304,6 +312,7 @@ public class EventTextControl : MonoBehaviour
         //表示文字数が文全体の文字数より少ないとき
         if (visibleLength < text.Length)
         {
+            Debug.Log(pastTime);
             pastTime += Time.deltaTime;
 
             //delayTimeを基準に一文字ずつ表示

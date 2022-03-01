@@ -13,9 +13,11 @@ public class EmoteButtonControl : MonoBehaviour
 
     //ボタン配置の場所
     [Header("IntializePlace")]
-    [SerializeField] Vector3 placeTop;
     [SerializeField] Vector3 placeLeft;
     [SerializeField] Vector3 placeRight;
+    [SerializeField] float stretchRate;
+    float canvasY = 1080 / 2;
+    float canvasX = 1960 / 2;
 
     [Header("StartButton")]
     [SerializeField] GameObject startButton;
@@ -62,7 +64,7 @@ public class EmoteButtonControl : MonoBehaviour
             return;
         }
 
-        if(placeTop == Vector3.zero || placeLeft == Vector3.zero || placeRight == Vector3.zero)
+        if(placeLeft == Vector3.zero || placeRight == Vector3.zero)
         {
             Debug.LogError("入力されていないベクターがあります");
             return;
@@ -83,14 +85,52 @@ public class EmoteButtonControl : MonoBehaviour
         {
             return;
         }
+        
         if(h)
-            ButtonPlacement(happinessButton, placeTop);
+        {
+            Vector3 showPlace = new Vector3(canvasX, placeLeft.y + canvasY, placeLeft.z);
+            ButtonPlacement(happinessButton, showPlace);
+        }
         if(s)
-            ButtonPlacement(sadnessButton, placeLeft);
+        {
+            Vector3 showPlace = new Vector3(canvasX, placeLeft.y + canvasY, placeLeft.z);
+            ButtonPlacement(sadnessButton, showPlace);
+        }
         if(a)
-            ButtonPlacement(angerButton, placeRight);
+        {
+            Vector3 showPlace = new Vector3(canvasX, placeLeft.y + canvasY, placeLeft.z);
+            ButtonPlacement(angerButton, showPlace);
+        }
+        if(h && s)
+        {
+            Vector3 showPlace = new Vector3(canvasX, placeLeft.y + canvasY, placeLeft.z);
+            ButtonPlacement(happinessButton, new Vector3(showPlace.x + (placeLeft.x * stretchRate), showPlace.y, showPlace.z));
+            ButtonPlacement(sadnessButton, new Vector3(showPlace.x + (placeRight.x * stretchRate), showPlace.y, showPlace.z));
+        }
+        if(h && a)
+        {
+            Vector3 showPlace = new Vector3(canvasX, placeLeft.y + canvasY, placeLeft.z);
+            ButtonPlacement(happinessButton, new Vector3(showPlace.x + (placeLeft.x * stretchRate), showPlace.y, showPlace.z));
+            ButtonPlacement(angerButton, new Vector3(showPlace.x + (placeRight.x * stretchRate), showPlace.y, showPlace.z));
+
+            Debug.Log(showPlace);
+        }
+        if(s && a)
+        {
+            Vector3 showPlace = new Vector3(canvasX, placeLeft.y + canvasY, placeLeft.z);
+            ButtonPlacement(sadnessButton, new Vector3(showPlace.x + (placeLeft.x * stretchRate), showPlace.y, showPlace.z));
+            ButtonPlacement(angerButton, new Vector3(showPlace.x + (placeRight.x * stretchRate), showPlace.y, showPlace.z));
+        }
+        if(h && s && a)
+        {
+            Vector3 showPlace = new Vector3(canvasX, placeLeft.y + canvasY, placeLeft.z);
+            ButtonPlacement(sadnessButton, new Vector3(canvasX + placeLeft.x, placeLeft.y + canvasY, placeLeft.z));
+            ButtonPlacement(angerButton, new Vector3(canvasX + placeRight.x, placeRight.y + canvasY, placeRight.z));
+            ButtonPlacement(happinessButton, showPlace);
+        }
 
         Time.timeScale = 0;
+        Debug.Log("Button配置完了");
     }
 
     public void ButtonClose()
@@ -100,8 +140,10 @@ public class EmoteButtonControl : MonoBehaviour
         ButtonRemove(angerButton);
         ButtonRemove(startButton);
 
-        EventTextControl.instance.isEmotoChange = true;
         Time.timeScale = 1;
+        EventTextControl.instance.isEmotoChange = true;
+        EventTextControl.instance.isSetList = false;
+        Debug.Log("Button撤去完了" + EventTextControl.instance.isSetList);
     }
 
     void ButtonInitialize()

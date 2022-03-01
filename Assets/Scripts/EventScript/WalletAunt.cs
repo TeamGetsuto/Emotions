@@ -34,7 +34,7 @@ public class WalletAunt : EventParentClass
     {
         Debug.Log("äÏÇ—Çî≠ê∂ÇµÇ‹ÇµÇΩ");
         spriteRenderer.sprite = spriteHappy;
-        EmotionSystem.current.PlayerEventEmotionChange(5, 15, 5);
+        EmotionSystem.current.PlayerEventEmotionChange(20, 0, -10);
         animatiionEnded = true;
     }
 
@@ -42,14 +42,14 @@ public class WalletAunt : EventParentClass
     {
         Debug.Log("îﬂÇµÇ›Çî≠ê∂ÇµÇ‹ÇµÇΩ");
         spriteRenderer.sprite = spriteSad;
-        EmotionSystem.current.PlayerEventEmotionChange(15, 5, 10);
+        EmotionSystem.current.PlayerEventEmotionChange(-10, 20, 0);
         animatiionEnded = true;
     }
 
     protected override void EventAnger()
     {
         Debug.Log("ì{ÇËÇî≠ê∂ÇµÇ‹ÇµÇΩ");
-        EmotionSystem.current.PlayerEventEmotionChange(5, -5, 15);
+        EmotionSystem.current.PlayerEventEmotionChange(0, -10, 20);
         animatiionEnded = true;
     }
     /// /// /// /// /// /// /// 
